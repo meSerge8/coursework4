@@ -1,5 +1,5 @@
 #include "circuit.h"
-
+#include "dnf.h"
 string benchPath = "../benchmarks/",
        filename = "S27.BEN";
 
@@ -11,6 +11,7 @@ int main()
     auto b = one.ExportBDD();
     b.ExportGV("test832");
 
+    dnf *d;
     // auto d = b.ExportDNF();
 
     // cout << d << endl;

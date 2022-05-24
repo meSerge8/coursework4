@@ -9,7 +9,7 @@
 #include <regex>
 
 #include "bdd.h"
-// #include "dnf.h"
+#include "dnf.h"
 #include "gate.h"
 
 using namespace std;

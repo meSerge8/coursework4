@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -6,14 +7,14 @@
 #include <list>
 #include <memory>
 
-#include "conjunction.h"
+#include "conj.h"
 
 using namespace std;
 
 class dnf
 {
     bool *constanta = nullptr;
-    list<conjunction> conjuctions;
+    list<conj> conjuctions;
     u_int varNum;
 
     vector<string> names;
@@ -39,14 +40,14 @@ public:
     void SetConstant(bool c);
     bool IsConstant();
 
-    void AddConjunction(conjunction);
-    list<conjunction> GetConjunctions();
+    void AddConjunction(conj);
+    list<conj> GetConjunctions();
     void SetNames(vector<string> names);
 
     // Reduce
     void Reduce();
-    void EraceIfDuplicate(list<conjunction>::iterator original,
-                          list<conjunction>::iterator duplicate);
+    void EraceIfDuplicate(list<conj>::iterator original,
+                          list<conj>::iterator duplicate);
 
     // Print
     friend ostream &operator<<(ostream &, dnf &);
@@ -55,7 +56,7 @@ private:
     // Operations
     void Simplify();
     // Print
-    string PrintConjunction(conjunction);
+    string PrintConjunction(conj);
 };
 
 // Print

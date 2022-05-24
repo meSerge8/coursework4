@@ -5,10 +5,10 @@ set(MAIN main.cpp)
 set(HEADER_DIR header)
 set(SOURCE_DIR source)
 set(BDD_MANAGER_DIR subprojects/bdd_manager)
-set(DNF_DIR subprojects/dnf)
+# set(DNF_DIR subprojects/dnf)
 
 add_subdirectory(${BDD_MANAGER_DIR})
-add_subdirectory(${DNF_DIR})
+# add_subdirectory(${DNF_DIR})
 
 aux_source_directory(${SOURCE_DIR} BDD_CXXS)
 
