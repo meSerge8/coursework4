@@ -1,55 +1,51 @@
 #include "dnf.h"
 
-// ostream &operator<<(ostream &os, dnf &d)
-// {
-//     auto conjs = d.conjuctions;
-//     os << "----- dnf -----" << endl
-//        << "amount of conjuctions: " << to_string(conjs.size()) << endl
-//        << endl;
+ostream &operator<<(ostream &os, dnf &d)
+{
+    auto conjs = d.cs;
+    os << "----- dnf -----" << endl
+       << "amount of conjuctions: " << to_string(conjs.size()) << endl
+       << endl;
 
-//     for (auto conj : conjs)
-//         os << d.PrintConjunction(conj) << endl;
+    for (auto conj : conjs)
+        os << d.PrintConjunction(conj) << endl;
 
-//     os << "----- dnf end -----" << endl;
+    os << "----- dnf end -----" << endl;
 
-//     return os;
-// }
+    return os;
+}
 
-// string dnf::PrintConjunction(conjunction c)
-// {
-//     if (names.empty())
-//         for (u_int i = 0; i < varNum; i++)
-//             names.push_back("x" + to_string(i));
+string dnf::PrintConjunction(conj c)
+{
+    if (c.IsConstant())
+    {
+        return *c.GetConstant() ? "1" : "0";
+    }
 
-//     int counter = -1;
-//     string res, sample;
+    string res;
+    for (size_t i = 0; i < c.Size(); i++)
+    {
+        if (c.Get(i) == non)
+        {
+            continue;
+        }
+        string sign = c.Get(i) == pos ? "" : "-";
+        res += sign + "x" + to_string(i) + " ";
+    }
 
-//     for (var var : c.GetVectorCopy())
-//     {
-//         counter++;
-//         if (var == non)
-//             continue;
+    return res;
+}
 
-//         sample = names.at(counter) + " ";
-//         if (var == neg)
-//             sample = "-" + sample;
+ostream &operator<<(ostream &os, list<dnf> &dnfs)
+{
+    os << "========== dnfs ==========" << endl
+       << endl;
 
-//         res += sample;
-//     }
+    for (auto d : dnfs)
+        os << d << endl;
 
-//     return res;
-// }
+    os << endl
+       << "========== dnfs end ==========" << endl;
 
-// ostream &operator<<(ostream &os, list<dnf> &dnfs)
-// {
-//     os << "========== dnfs ==========" << endl
-//        << endl;
-
-//     for (auto d : dnfs)
-//         os << d << endl;
-
-//     os << endl
-//        << "========== dnfs end ==========" << endl;
-
-//     return os;
-// }
+    return os;
+}

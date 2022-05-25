@@ -1,43 +1,54 @@
 #include "dnf.h"
 
-// bool *dnf::GetConstant()
-// {
-//     return constanta;
-// }
+bool *dnf::GetConstant()
+{
+    return constanta;
+}
 
-// void dnf::SetConstant(bool c)
-// {
-//     if (constanta != nullptr)
-//         delete constanta;
+void dnf::SetConstant(bool c)
+{
+    if (constanta != nullptr)
+        delete constanta;
 
-//     constanta = new bool(c);
+    constanta = new bool(c);
 
-//     conjuctions.clear();
-// }
+    cs.clear();
+}
 
-// bool dnf::IsConstant()
-// {
-//     return (constanta != nullptr) ? true : false;
-// }
+bool dnf::IsConstant()
+{
+    return constanta != nullptr;
+}
 
-// void dnf::AddConjunction(conjunction c)
-// {
-//     if (c.size() != varNum)
-//         throw logic_error("Wrong number of variables");
+void dnf::AddConjunction(conj c)
+{
+    if (c.Size() != varNum)
+        throw logic_error("Wrong number of variables");
 
-//     conjuctions.push_back(c);
-// }
+    if (c.IsConstant())
+        if (not *c.GetConstant())
+            return;
 
-// list<conjunction> dnf::GetConjunctions()
-// {
-//     return conjuctions;
-// }
+    cs.push_back(c);
 
-// void dnf::SetNames(vector<string> l)
-// {
-//     if (l.size() != varNum)
-//         throw logic_error("Wrong number of variables");
+    if (constanta != nullptr)
+    {
+        delete constanta;
+        constanta = nullptr;
+    }
 
-//     names = l;
-// }
+    // Reduce();
+}
 
+vector<conj> dnf::GetConjunctions()
+{
+    return cs;
+}
+
+void dnf::SetNames(vector<string> l)
+{
+    if (l.size() != varNum)
+        throw logic_error("Wrong number of variables");
+
+    names = l;
+}

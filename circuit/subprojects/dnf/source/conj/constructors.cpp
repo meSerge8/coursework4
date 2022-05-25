@@ -1,25 +1,37 @@
 #include "conj.h"
 
-conj::conj(int size) : varVect(size)
+conj::conj()
 {
-    for (var &v : varVect)
+    constanta = new bool(0);
+}
+
+conj::conj(vector<var> initVs)
+{
+    vs = initVs;
+}
+
+conj::conj(int size) : vs(size)
+{
+    for (var &v : vs)
         v = non;
 }
 
-// conjunction::conjunction(int size, bool constanta) : conjunction(size)
-// {
-//     this->constanta = new bool(constanta);
-// }
+conj::conj(int size, bool constanta) : conj(size)
+{
+    this->constanta = new bool(constanta);
+}
 
-// conjunction::conjunction(initializer_list<var> l) : varVect(l){};
+// conj::conj(initializer_list<var> l) : vs(l){};
 
-// conjunction::conjunction(const conjunction &copy) : varVect(copy.varVect)
-// {
-//     constanta = (copy.constanta == nullptr) ? nullptr : new bool(*copy.constanta);
-// }
+conj::conj(const conj &copy) : vs(copy.vs)
+{
+    constanta = copy.constanta != nullptr
+                    ? new bool(*copy.constanta)
+                    : nullptr;
+}
 
-// conjunction::~conjunction()
-// {
-//     if (constanta != nullptr)
-//         delete constanta;
-// }
+conj::~conj()
+{
+    if (constanta != nullptr)
+        delete constanta;
+}

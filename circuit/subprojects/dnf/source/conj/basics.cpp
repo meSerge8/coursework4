@@ -1,32 +1,32 @@
 #include "conj.h"
 
-// bool *conjunction::GetConstant()
-// {
-//     return constanta;
-// }
+bool *conj::GetConstant()
+{
+    return constanta;
+}
 
-// void conjunction::SetConstant(bool c)
-// {
-//     if (constanta != nullptr)
-//         delete constanta;
+void conj::SetConstant(bool c)
+{
+    if (constanta != nullptr)
+        delete constanta;
 
-//     constanta = new bool(c);
+    constanta = new bool(c);
 
-//     for (auto &v : varVect)
-//         v = non;
-// }
+    for (auto &v : vs)
+        v = non;
+}
 
-// bool conjunction::IsConstant()
-// {
-//     return (constanta != nullptr) ? true : false;
-// }
+bool conj::IsConstant()
+{
+    return constanta != nullptr;
+}
 
-// size_t conjunction::size()
-// {
-//     return varVect.size();
-// }
+size_t conj::Size()
+{
+    return vs.size();
+}
 
-// vector<var> conjunction::GetVectorCopy()
-// {
-//     return varVect;
-// }
+vector<var> conj::GetVectorCopy()
+{
+    return vs;
+}

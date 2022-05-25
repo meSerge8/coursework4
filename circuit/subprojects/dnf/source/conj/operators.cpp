@@ -1,69 +1,95 @@
 #include "conj.h"
 
-// conjunction conjunction::AND(const conjunction &conj)
-// {
-//     if (constanta != nullptr)
-//         return {*constanta == 1 ? conj : *this};
+conj conj::operator*(const conj &c)
+{
+    if (vs.size() != c.vs.size())
+    {
+        throw invalid_argument("conjunctions must be the same size");
+    }
 
-//     if (conj.constanta != nullptr)
-//         return {*conj.constanta == 1 ? *this : conj};
+    if (constanta != nullptr)
+        return *constanta ? c : *this;
 
-//     int size = varVect.size(), z;
-//     conjunction res(size);
+    if (c.constanta != nullptr)
+        return *c.constanta ? *this : c;
 
-//     for (int i; i < size; i++)
-//     {
-//         z = varVect[i] | conj.varVect[i];
+    conj res(vs.size());
 
-//         if (z == 0b11)
-//             return {size, 0};
+    for (int i = 0; i < vs.size(); i++)
+    {
+        int z = vs[i] | c.vs[i];
 
-//         res[i] = var(z);
-//     }
+        if (z == 0b11)
+            return {(int)vs.size(), 0};
 
-//     return res;
-// }
+        res.Set(i, var(z));
+    }
 
-// vector<conjunction> conjunction::Negate()
-// {
-//     size_t size = this->size();
-//     vector<conjunction> res(size);
+    return res;
+}
 
-//     for (auto i = 0; i < size; i++)
-//     {
-//         var v = var(varVect[i] xor 0b11);
+vector<conj> conj::Negate()
+{
+    if (IsConstant())
+    {
+        return {{vs.size(), not *GetConstant()}};
+    }
 
-//         if (v == 0b11)
-//             continue;
+    vector<conj> res;
 
-//         conjunction conj(size);
-//         conj[i] = v;
-//         res.push_back(conj);
-//     }
+    for (int i = 0; i < vs.size(); i++)
+    {
+        int v = vs[i] xor 0b11;
 
-//     return res;
-// }
+        if (v == 0b11)
+            continue;
 
-// bool conjunction::operator==(const conjunction &conj)
-// {
-//     if ((constanta == nullptr) != (conj.constanta == nullptr))
-//         return false;
+        conj cj(vs.size());
+        cj.Set(i, var(v));
+        res.push_back(cj);
+    }
 
-//     if (IsConstant())
-//         return conj.constanta == nullptr ? false : true;
+    return res;
+}
 
-//     if (varVect != conj.varVect)
-//         return false;
+bool conj::operator==(const conj &c)
+{
+    if ((constanta == nullptr) != (c.constanta == nullptr))
+        return false;
 
-//     return true;
-// }
+    if (IsConstant())
+        return *constanta == *c.constanta;
 
-// var &conjunction::operator[](size_t i)
-// {
-//     return varVect[i];
-// }
+    return vs == c.vs;
+}
 
-// conjunction conjunction::Reduce(const conjunction &conj)
+void conj::Set(int idx, var v)
+{
+    vs[idx] = v;
+
+    if (v != non)
+    {
+        if (constanta != nullptr)
+        {
+            delete constanta;
+            constanta = nullptr;
+        }
+        return;
+    }
+
+    for (var vr : vs)
+        if (vr != non)
+            return;
+
+    constanta = new bool(false);
+}
+
+var conj::Get(int idx)
+{
+    return vs[idx];
+}
+
+// conj conj::Reduce(const conj &conj)
 // {
 //     return conj;
 // }

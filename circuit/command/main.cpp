@@ -6,16 +6,20 @@ string benchPath = "../benchmarks/",
 int main()
 {
 
-    circuit one;
-    one.ImportBenchmark(benchPath + filename);
-    auto b = one.ExportBDD();
-    b.ExportGV("test832");
+    // circuit one;
+    // one.ImportBenchmark(benchPath + filename);
+    // auto b = one.ExportBDD();
+    // b.ExportGV("test832");
 
-    dnf *d;
-    // auto d = b.ExportDNF();
+    cout << "hello world" << endl;
 
-    // cout << d << endl;
+    dnf d(3);
+    conj c(3, 1);
 
+    d.AddConjunction(c);
+    
+    cout << c << endl;
+    cout << d << endl;
     // one.PrintGates();
     // one.ExportCircuit("S27_circuit.txt");
     // cout << endl

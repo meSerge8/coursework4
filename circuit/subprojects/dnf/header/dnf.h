@@ -14,7 +14,7 @@ using namespace std;
 class dnf
 {
     bool *constanta = nullptr;
-    list<conj> conjuctions;
+    vector<conj> cs;
     u_int varNum;
 
     vector<string> names;
@@ -23,6 +23,7 @@ public:
     // Constructors
     dnf(int variableNumber, bool constant = false);
     dnf(int variableNumber, vector<string> variableNames, bool constant = false);
+    dnf(int variableNumber,  vector<conj> cs);
     dnf(const dnf &);
     ~dnf();
 
@@ -36,18 +37,19 @@ public:
     dnf NEG();
 
     // Operations
+    int GetVarNum();
     bool *GetConstant();
     void SetConstant(bool c);
     bool IsConstant();
 
     void AddConjunction(conj);
-    list<conj> GetConjunctions();
+    vector<conj> GetConjunctions();
     void SetNames(vector<string> names);
 
     // Reduce
     void Reduce();
-    void EraceIfDuplicate(list<conj>::iterator original,
-                          list<conj>::iterator duplicate);
+    void EraceIfDuplicate(vector<conj>::iterator original,
+                          vector<conj>::iterator duplicate);
 
     // Print
     friend ostream &operator<<(ostream &, dnf &);

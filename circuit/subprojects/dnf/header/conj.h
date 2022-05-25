@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <list>
 
 using namespace std;
 
@@ -16,24 +17,30 @@ enum var
 class conj
 {
     bool *constanta = nullptr;
-    vector<var> varVect;
+    vector<var> vs;
 
 public:
-    conj(int size);
-    conj(int size, bool constanta);
+    conj();                         // 1
+    conj(vector<var>);              // 1
+    conj(int size);                 // 1
+    conj(int size, bool constanta); // 1
+
     conj(const conj &);
-    conj(initializer_list<var> l) { vector<var> varVect(l); };
     ~conj();
+    // conj(initializer_list<var> l) { vector<var> vs(l); };
 
-    bool *GetConstant();
-    void SetConstant(bool c);
-    bool IsConstant();
+    bool *GetConstant();      // 1
+    void SetConstant(bool c); // 1
+    bool IsConstant();        // 1
 
-    vector<var> GetVectorCopy();
-    conj AND(const conj &);
-    vector<conj> Negate();
-    var &operator[](size_t);
-    bool operator==(const conj &);
-    size_t size();
-    conj Reduce(const conj &);
+    conj operator*(const conj &);                  // 1
+    vector<conj> Negate();                         // 1
+    bool operator==(const conj &);                 // 1
+    size_t Size();                                 // 1
+    friend ostream &operator<<(ostream &, conj &); // 1
+    vector<var> GetVectorCopy();                   // 1
+
+    void Set(int idx, var v);
+    var Get(int idx);
+    // conj Reduce(const conj &);
 };
