@@ -13,7 +13,6 @@ using namespace std;
 
 class dnf
 {
-    bool *constanta = nullptr;
     vector<conj> cs;
     u_int varNum;
 
@@ -21,11 +20,11 @@ class dnf
 
 public:
     // Constructors
-    dnf(int variableNumber, bool constant = false);
+    dnf(int variableNumber, bool constant = false); // 1
     dnf(int variableNumber, vector<string> variableNames, bool constant = false);
-    dnf(int variableNumber,  vector<conj> cs);
+    dnf(int variableNumber, vector<conj> cs);
     dnf(const dnf &);
-    ~dnf();
+    ~dnf(); // 1
 
     // Operators
     dnf AND(const dnf &);
@@ -37,28 +36,29 @@ public:
     dnf NEG();
 
     // Operations
-    int GetVarNum();
-    bool *GetConstant();
+    int GetVarNum(); // 1
+    bool GetConstant();
     void SetConstant(bool c);
     bool IsConstant();
 
-    void AddConjunction(conj);
-    vector<conj> GetConjunctions();
-    void SetNames(vector<string> names);
+    void AddConjunction(conj);           // 1
+    vector<conj> GetConjunctions();      // 1
+    void SetNames(vector<string> names); // 1
 
     // Reduce
-    void Reduce();
-    void EraceIfDuplicate(vector<conj>::iterator original,
-                          vector<conj>::iterator duplicate);
+    dnf Reduce();
+    vector<conj> dnf::shrinkConstants();
+    bool absorb(vector<conj> *);
+    bool glue(vector<conj> *);
 
     // Print
-    friend ostream &operator<<(ostream &, dnf &);
+    friend ostream &operator<<(ostream &, dnf &); // 1
 
 private:
     // Operations
     void Simplify();
     // Print
-    string PrintConjunction(conj);
+    string PrintConjunction(conj); // 1
 };
 
 // Print

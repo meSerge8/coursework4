@@ -7,8 +7,11 @@ ostream &operator<<(ostream &os, dnf &d)
        << "amount of conjuctions: " << to_string(conjs.size()) << endl
        << endl;
 
-    for (auto conj : conjs)
-        os << d.PrintConjunction(conj) << endl;
+    if (d.IsConstant())
+        cout << d.GetConstant() << endl;
+    else
+        for (auto conj : conjs)
+            os << d.PrintConjunction(conj) << endl;
 
     os << "----- dnf end -----" << endl;
 

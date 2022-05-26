@@ -3,7 +3,7 @@
 dnf::dnf(int variableNumber, bool constant)
 {
     varNum = variableNumber;
-    constanta = new bool(constant);
+    cs.push_back({varNum, constant});
 }
 
 dnf::dnf(int variableNumber, vector<string> variableNames, bool constant)
@@ -12,18 +12,17 @@ dnf::dnf(int variableNumber, vector<string> variableNames, bool constant)
     SetNames(variableNames);
 }
 
+dnf::dnf(int variableNumber, vector<conj> conjs)
+{
+    varNum = variableNumber;
+    cs = conjs;
+}
+
 dnf::dnf(const dnf &orig)
 {
     varNum = orig.varNum;
     cs = orig.cs;
     names = orig.names;
-    constanta = orig.constanta != nullptr
-                    ? new bool(*orig.constanta)
-                    : constanta = nullptr;
 }
 
-dnf::~dnf()
-{
-    if (constanta != nullptr)
-        delete constanta;
-}
+dnf::~dnf() {}

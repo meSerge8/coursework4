@@ -1,43 +1,48 @@
 #include "dnf.h"
 
-bool *dnf::GetConstant()
+int dnf::GetVarNum()
 {
-    return constanta;
-}
-
-void dnf::SetConstant(bool c)
-{
-    if (constanta != nullptr)
-        delete constanta;
-
-    constanta = new bool(c);
-
-    cs.clear();
+    return varNum;
 }
 
 bool dnf::IsConstant()
 {
-    return constanta != nullptr;
+    if (cs.size() == 0)
+        throw logic_error("bad dnf");
+
+    if (cs.size() > 1)
+        return false;
+
+    return cs[0].IsConstant();
+}
+
+bool dnf::GetConstant()
+{
+    if (cs.size() != 1)
+        throw logic_error("cs wrong size");
+
+    auto c = cs[0];
+
+    if (not c.IsConstant())
+        throw logic_error("Cant get constant");
+
+    return *c.GetConstant();
+}
+
+void dnf::SetConstant(bool c)
+{
+    cs.clear();
+    cs.push_back({varNum, c});
 }
 
 void dnf::AddConjunction(conj c)
 {
-    if (c.Size() != varNum)
+    if (varNum != c.Size())
         throw logic_error("Wrong number of variables");
-
-    if (c.IsConstant())
-        if (not *c.GetConstant())
-            return;
 
     cs.push_back(c);
 
-    if (constanta != nullptr)
-    {
-        delete constanta;
-        constanta = nullptr;
-    }
-
-    // Reduce();
+    Reduce();
 }
 
 vector<conj> dnf::GetConjunctions()
@@ -47,7 +52,7 @@ vector<conj> dnf::GetConjunctions()
 
 void dnf::SetNames(vector<string> l)
 {
-    if (l.size() != varNum)
+    if (varNum != l.size())
         throw logic_error("Wrong number of variables");
 
     names = l;
