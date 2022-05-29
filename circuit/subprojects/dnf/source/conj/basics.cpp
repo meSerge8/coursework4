@@ -1,16 +1,14 @@
 #include "conj.h"
 
-bool *conj::GetConstant()
+bool conj::GetConstant()
 {
     return constanta;
 }
 
 void conj::SetConstant(bool c)
 {
-    if (constanta != nullptr)
-        delete constanta;
-
-    constanta = new bool(c);
+    isConstanta = true;
+    constanta = c;
 
     for (auto &v : vs)
         v = non;
@@ -18,7 +16,7 @@ void conj::SetConstant(bool c)
 
 bool conj::IsConstant()
 {
-    return constanta != nullptr;
+    return isConstanta;
 }
 
 size_t conj::Size()

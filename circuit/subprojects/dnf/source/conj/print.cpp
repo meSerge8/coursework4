@@ -4,7 +4,13 @@ ostream &operator<<(ostream &os, conj &c)
 {
     if (c.IsConstant())
     {
-        os << *c.GetConstant() ? "1" : "0";
+        os << "Constanta=";
+        if (c.GetConstant())
+            os << "1";
+        else
+            os << "0";
+            
+        return os;
     }
 
     for (size_t i = 0; i < c.vs.size(); i++)

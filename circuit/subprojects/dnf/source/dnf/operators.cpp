@@ -4,66 +4,63 @@ dnf dnf::NEG()
 {
     dnf res(varNum, true);
 
-    for (conj &c : cs)
+    for (conj c : cs)
     {
-        res = res.AND({varNum, c.Negate()});
+        auto negs = c.Negate();
+        dnf neg(varNum, negs);
+        dnf res2 = res.AND(neg);
+        res = res2;
     }
-
+   
     return res;
 }
 
 dnf dnf::AND(const dnf &d)
 {
-    if (varNum != d.varNum)
-        throw invalid_argument("dnfs must be the same size");
 
     dnf res(varNum);
 
     for (conj cx : cs)
+    {
         for (conj cy : d.cs)
-            res.AddConjunction(cx * cy);
+        {
+            auto mul = cx * cy;
+            res.AddConjunction(mul);
+        }
+    }
 
     return res;
 }
 
-// dnf dnf::NAND(const dnf &y)
-// {
-//     // auto negX = x.negative;
-//     // auto negY = this->negative;
+dnf dnf::OR(const dnf &x)
+{
+    dnf res(*this);
 
-//     // return negY->OR(*negX);
-//     return y;
-// }
+    for (auto &c : x.cs)
+        res.AddConjunction(c);
 
-// // not tested
-// dnf dnf::OR(const dnf &x)
-// {
-//     vector<conj> resCS(cs);
-//     resCS.insert(resCS.end(), x.cs.begin(), x.cs.end());
+    return res;
+}
 
-//     dnf res(varNum, resCS);
-//     res.Reduce();
+dnf dnf::NAND(const dnf &x)
+{
+    dnf a = AND(x);
+    dnf b = a.NEG();
+    return b;
+}
 
-//     return res;
-// }
+dnf dnf::NOR(const dnf &x)
+{
+    return OR(x).NEG();
+}
 
-// dnf dnf::NOR(const dnf &x)
-// {
-//     // auto negX = x.negative;
-//     // auto negY = this->negative;
-//     // auto res = negY->AND(*negX);
-//     // return res;
-//     return x;
-// }
+dnf dnf::XOR(const dnf &x)
+{
+    dnf res = AND(x).NEG().AND(OR(x));
+    return res;
+}
 
-// dnf dnf::XOR(const dnf &x)
-// {
-//     // dnf x(2);
-//     return x;
-// }
-
-// dnf dnf::NXOR(const dnf &x)
-// {
-//     // dnf x(2);
-//     return x;
-// }
+dnf dnf::NXOR(const dnf &x)
+{
+    return AND(x).OR(OR(x).NEG());
+}

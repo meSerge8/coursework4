@@ -2,36 +2,31 @@
 
 conj::conj()
 {
-    constanta = new bool(0);
+    isConstanta = false;
+    constanta = false;
 }
 
 conj::conj(vector<var> initVs)
 {
+    isConstanta = false;
+    constanta = false;
     vs = initVs;
 }
 
-conj::conj(int size) : vs(size)
+conj::conj(int size, bool cons) : vs(size)
 {
+    if (size == 0)
+        throw logic_error("size must not be zero");
     for (var &v : vs)
         v = non;
+
+    isConstanta = true;
+    constanta = cons;
 }
 
-conj::conj(int size, bool constanta) : conj(size)
+conj::conj(const conj &copy)
 {
-    this->constanta = new bool(constanta);
-}
-
-// conj::conj(initializer_list<var> l) : vs(l){};
-
-conj::conj(const conj &copy) : vs(copy.vs)
-{
-    constanta = copy.constanta != nullptr
-                    ? new bool(*copy.constanta)
-                    : nullptr;
-}
-
-conj::~conj()
-{
-    if (constanta != nullptr)
-        delete constanta;
+    vs = copy.vs;
+    isConstanta = copy.isConstanta;
+    constanta = copy.constanta;
 }

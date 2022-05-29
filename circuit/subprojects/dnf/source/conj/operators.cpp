@@ -3,15 +3,13 @@
 conj conj::operator*(const conj &c)
 {
     if (vs.size() != c.vs.size())
-    {
-        throw invalid_argument("conjunctions must be the same size");
-    }
+        throw invalid_argument("conjunctions must be the same size:" + to_string(vs.size()) + "|" + to_string(c.vs.size()));
 
-    if (constanta != nullptr)
-        return *constanta ? c : *this;
+    if (isConstanta)
+        return constanta != 0 ? c : *this;
 
-    if (c.constanta != nullptr)
-        return *c.constanta ? *this : c;
+    if (c.isConstanta)
+        return c.constanta != 0 ? *this : c;
 
     conj res(vs.size());
 
@@ -32,7 +30,10 @@ vector<conj> conj::Negate()
 {
     if (IsConstant())
     {
-        return {{vs.size(), not *GetConstant()}};
+        vector<conj> res;
+        conj r(vs.size(), not GetConstant());
+        res.push_back(r);
+        return res;
     }
 
     vector<conj> res;
@@ -54,11 +55,11 @@ vector<conj> conj::Negate()
 
 bool conj::operator==(const conj &c)
 {
-    if ((constanta == nullptr) != (c.constanta == nullptr))
+    if (isConstanta != c.isConstanta)
         return false;
 
     if (IsConstant())
-        return *constanta == *c.constanta;
+        return constanta == c.constanta;
 
     return vs == c.vs;
 }
@@ -69,11 +70,7 @@ void conj::Set(int idx, var v)
 
     if (v != non)
     {
-        if (constanta != nullptr)
-        {
-            delete constanta;
-            constanta = nullptr;
-        }
+        isConstanta = false;
         return;
     }
 
@@ -81,15 +78,10 @@ void conj::Set(int idx, var v)
         if (vr != non)
             return;
 
-    constanta = new bool(false);
+    constanta = false;
 }
 
 var conj::Get(int idx)
 {
     return vs[idx];
 }
-
-// conj conj::Reduce(const conj &conj)
-// {
-//     return conj;
-// }

@@ -16,8 +16,10 @@ using namespace std;
 
 class circuit
 {
-private:
-    list<gate *> gates, outputs;
+public:
+    list<gate *> gates,
+        outputs,
+        inputs;
 
     // Amount of input gates
     u_int inGates = 0;
@@ -46,11 +48,11 @@ public:
     u_int CountGates();
     u_int CountMemory();
 
-    //Export as BDD
+    // Export as BDD
     bdd ExportBDD();
 
-    //Export as DNF
-    // list<dnf> ExportDNF();
+    // Export as DNF
+    list<dnf> ExportDNF();
 
     // Print
     friend ostream &operator<<(ostream &, circuit &);
@@ -78,16 +80,18 @@ private:
     // Printer
     list<string> GetOutNames();
 
-    //Export as BDD
+    // Export as BDD
     map<string, vertex *> MakeBasicMap();
     vertex *MakeVertex(gate *, map<string, vertex *> *, bdd_manager *);
     vertex *PerformOperation(gate *, list<vertex *>, bdd_manager *);
     // void AddInputs(map<string, vertex *> *map);
 
     // Export as DNF
-    // dnf BuildDNF(gate *, vector<string>);
+    void buildInputGates();
     vector<string> GetInputNames();
-    // dnf BuildInputDNF(gate *, vector<string>);
+    dnf BuildDNF(gate *);
+    dnf BuildInputDNF(gate *);
+    dnf apply(dnf &, dnf &, gateType);
 
     // Printer
     // void PrintGate(gate, ostream &outStream);

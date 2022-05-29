@@ -9,7 +9,7 @@ using namespace std;
 enum gateType
 {
     AND,   // 0
-    OR,    // 1
+    OR,    
     NOT,   // 2
     NAND,  // 3
     NOR,   // 4

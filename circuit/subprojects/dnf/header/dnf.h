@@ -6,6 +6,7 @@
 #include <exception>
 #include <list>
 #include <memory>
+#include <algorithm>
 
 #include "conj.h"
 
@@ -20,45 +21,46 @@ class dnf
 
 public:
     // Constructors
-    dnf(int variableNumber, bool constant = false); // 1
+    dnf(int variableNumber, bool constant = false); 
     dnf(int variableNumber, vector<string> variableNames, bool constant = false);
     dnf(int variableNumber, vector<conj> cs);
     dnf(const dnf &);
-    ~dnf(); // 1
+    ~dnf(); 
 
     // Operators
     dnf AND(const dnf &);
-    dnf NAND(const dnf &);
     dnf OR(const dnf &);
+    
+    dnf NAND(const dnf &);
     dnf NOR(const dnf &);
     dnf XOR(const dnf &);
     dnf NXOR(const dnf &);
     dnf NEG();
 
     // Operations
-    int GetVarNum(); // 1
+    int GetVarNum(); 
     bool GetConstant();
     void SetConstant(bool c);
     bool IsConstant();
 
-    void AddConjunction(conj);           // 1
-    vector<conj> GetConjunctions();      // 1
-    void SetNames(vector<string> names); // 1
+    void AddConjunction(conj);           
+    vector<conj> GetConjunctions();      
+    void SetNames(vector<string> names); 
 
     // Reduce
-    dnf Reduce();
-    vector<conj> dnf::shrinkConstants();
-    bool absorb(vector<conj> *);
-    bool glue(vector<conj> *);
+    void Reduce();
 
     // Print
-    friend ostream &operator<<(ostream &, dnf &); // 1
+    friend ostream &operator<<(ostream &, dnf &); 
 
 private:
-    // Operations
-    void Simplify();
+    // Reduce
+    bool shrinkConstants();
+    bool absorb();
+    bool glue();
+
     // Print
-    string PrintConjunction(conj); // 1
+    string PrintConjunction(conj); 
 };
 
 // Print

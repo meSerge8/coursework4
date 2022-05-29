@@ -21,19 +21,18 @@ ostream &operator<<(ostream &os, dnf &d)
 string dnf::PrintConjunction(conj c)
 {
     if (c.IsConstant())
-    {
-        return *c.GetConstant() ? "1" : "0";
-    }
+        return c.GetConstant() ? "1" : "0";
 
     string res;
-    for (size_t i = 0; i < c.Size(); i++)
+    for (int i = 0; i < c.Size(); i++)
     {
         if (c.Get(i) == non)
-        {
             continue;
-        }
+
+        string name = names.size() ? names[i] : "x" + to_string(i);
+
         string sign = c.Get(i) == pos ? "" : "-";
-        res += sign + "x" + to_string(i) + " ";
+        res += sign + name + " ";
     }
 
     return res;

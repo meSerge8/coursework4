@@ -1,60 +1,86 @@
 #include "circuit.h"
 
-// list<dnf> circuit::ExportDNF()
-// {
-//     list<dnf> dnfs;
-
-//     auto vars = GetInputNames();
-
-//     for (auto outGate : outputs)
-//     {
-//         dnf res_dnf = BuildDNF(outGate, vars);
-//         dnfs.push_back(res_dnf);
-//     }
-
-//     return dnfs;
-// }
-
-// dnf circuit::BuildDNF(gate *g, vector<string> vars)
-// {
-//     if (g->type == INPUT)
-//         return BuildInputDNF(g, vars);
-
-//     int capacity = vars.size();
-//     dnf resDNF(capacity);
-
-//     for (auto subgate : g->subGates)
-//     {
-//         dnf subDNF = BuildDNF(subgate, vars);
-//         // BuildFromSubGatesDNF(subgate, GetInputNames());
-//     }
-
-//     return resDNF;
-// }
-
-vector<string> circuit::GetInputNames()
+list<dnf> circuit::ExportDNF()
 {
-    vector<string> inputNames;
+    buildInputGates();
+    list<dnf> dnfs;
 
-    for (auto gate : gates)
-        if (gate->type == INPUT)
-            inputNames.push_back(gate->name);
+    vector<string> names;
+    for (gate *g : inputs)
+        names.push_back(g->name);
 
-    return inputNames;
+    for (gate *outGate : outputs)
+    {
+
+        dnf res = BuildDNF(outGate);
+        res.SetNames(names);
+        dnfs.push_back(res);
+    }
+    return dnfs;
 }
-    
-// dnf circuit::BuildInputDNF(gate *g, vector<string> vars)
-// {
-//     auto it = find(vars.begin(), vars.end(), g->name);
-//     int index = distance(vars.begin(), it);
 
-//     int capacity = vars.size();
-//     conjunction cnj(capacity);
+dnf circuit::BuildDNF(gate *g)
+{
+    if (g->type == INPUT)
+        return BuildInputDNF(g);
 
-//     cnj.insert(cnj.begin() + index, pos);
+    if (g->type == NOT)
+    {
+        gate *subGate = g->subGates.front();
+        return BuildDNF(subGate).NEG();
+    }
 
-//     dnf resDNF(capacity);
-//     resDNF.AddConjunction(cnj);
+    auto first = g->subGates.begin();
+    dnf res = BuildDNF(*first);
+    for (auto itr = next(first); itr != g->subGates.end(); itr++)
+    {
+        dnf sub = BuildDNF(*itr);
+        res = apply(res, sub, g->type);
+    }
 
-//     return resDNF;
-// }
+    return res;
+}
+
+dnf circuit::BuildInputDNF(gate *g)
+{
+    int i = 0;
+    for (gate *inGate : inputs)
+    {
+        if (inGate == g)
+            break;
+
+        i++;
+    }
+
+    conj c(inputs.size());
+    c.Set(i, pos);
+
+    return {inputs.size(), {c}};
+}
+
+dnf circuit::apply(dnf &x, dnf &y, gateType type)
+{
+    switch (type)
+    {
+    case AND:
+        return x.AND(y);
+
+    case OR:
+        return x.OR(y);
+
+    case NAND:
+        return x.NAND(y);
+
+    case NOR:
+        return x.NOR(y);
+
+    case XOR:
+        return x.XOR(y);
+
+    case NXOR:
+        return x.NXOR(y);
+
+    default:
+        throw logic_error("Can't deduce what to do");
+    }
+}

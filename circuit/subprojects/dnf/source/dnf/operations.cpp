@@ -26,7 +26,7 @@ bool dnf::GetConstant()
     if (not c.IsConstant())
         throw logic_error("Cant get constant");
 
-    return *c.GetConstant();
+    return c.GetConstant();
 }
 
 void dnf::SetConstant(bool c)
