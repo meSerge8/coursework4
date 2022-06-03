@@ -16,7 +16,6 @@ class dnf
 {
     vector<conj> cs;
     u_int varNum;
-
     vector<string> names;
 
 public:
@@ -30,7 +29,6 @@ public:
     // Operators
     dnf AND(const dnf &);
     dnf OR(const dnf &);
-    
     dnf NAND(const dnf &);
     dnf NOR(const dnf &);
     dnf XOR(const dnf &);

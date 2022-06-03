@@ -1,7 +1,6 @@
 #include "circuit.h"
 
-string benchPath = "../benchmarks/",
-       filename = "S27.BEN";
+string benchPath = "../benchmarks/";
 
 int main(const int argc, const char *argv[])
 {
@@ -13,15 +12,13 @@ int main(const int argc, const char *argv[])
     }
 
     string filename(argv[1]);
-
     circuit c;
+
     c.ImportBenchmark(benchPath + filename);
 
     auto b = c.ExportBDD();
     b.ExportGV("test_basic");
 
-    // auto d = b.ExportDNF();
-    // cout << d << endl;
-
-    c.ExportCircuit(filename + "circuit.txt");
+    auto d = c.ExportDNF();
+    cout << d << endl;
 }

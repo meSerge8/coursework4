@@ -7,14 +7,6 @@
 
 using namespace std;
 
-// TODO
-
-// struct variable
-// {
-//     string value;
-//     u_int32_t index;
-// };
-
 class vertex
 {
 private:
@@ -56,7 +48,7 @@ public:
 };
 
 //----------------------------------------------------------
-// move to different h files
+
 class term_vertex : public vertex
 {
 public:

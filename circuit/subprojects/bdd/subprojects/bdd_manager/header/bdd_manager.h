@@ -13,16 +13,13 @@ using namespace std;
 
 class bdd_manager
 {
-private:
-    list<variable *> vars; // add deleter to destructor (done)
+    list<variable *> vars;
     variable *zeroVar, *oneVar;
 
 public:
-    // Constructors
     bdd_manager();
     ~bdd_manager();
 
-    // Create
     variable *CreateVar(string variableName);
     vertex *CreateVertex(string vertexName);
     vertex *CreateVertex(variable *variableReference);
@@ -30,7 +27,6 @@ public:
     vertex *CreateOne();
     void Utilize(vertex *delme);
 
-    // Operators
     vertex *AND_bin(vertex *one, vertex *two);
     vertex *OR_bin(vertex *one, vertex *two);
     vertex *NAND_bin(vertex *one, vertex *two);
@@ -45,18 +41,14 @@ public:
     vertex *XOR(list<vertex *> vertexList);
     vertex *NXOR(list<vertex *> vertexList);
 
-    // Negate
     vertex *Negate(vertex *rootVertex);
 
-    // Reduce
-    vertex *Reduce(vertex *rootVertex); // hide
+    vertex *Reduce(vertex *rootVertex);
 
-    // Support
     list<variable *> GetVariables();
 
     void PrintVariables();
 
-    // Export as PNG via graphviz   // need to be moved to bdd class!
     void ExportPNG(list<string> *outputGatesNames,
                    list<vertex *> *vertexList,
                    string filename);

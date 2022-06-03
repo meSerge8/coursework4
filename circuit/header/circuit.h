@@ -16,30 +16,22 @@ using namespace std;
 
 class circuit
 {
-public:
     list<gate *> gates,
         outputs,
         inputs;
 
-    // Amount of input gates
-    u_int inGates = 0;
-
-    // Amount of output gates
-    u_int outGates = 0;
-
-    // Amount of trigger gates
-    u_int triggerGates = 0;
+    u_int inGates = 0,
+          outGates = 0,
+          triggerGates = 0;
 
 public:
-    // Constructors
     circuit();
     ~circuit();
 
-    // Import Benchmark
     void ImportBenchmark(string);
-
-    // Export circuit
     void ExportCircuit(string);
+    bdd ExportBDD();
+    list<dnf> ExportDNF();
 
     u_int CountInputs();
     u_int CountOutputs();
@@ -47,12 +39,6 @@ public:
     u_int CountTriggers();
     u_int CountGates();
     u_int CountMemory();
-
-    // Export as BDD
-    bdd ExportBDD();
-
-    // Export as DNF
-    list<dnf> ExportDNF();
 
     // Print
     friend ostream &operator<<(ostream &, circuit &);

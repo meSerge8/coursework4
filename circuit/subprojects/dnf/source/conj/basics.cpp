@@ -23,8 +23,3 @@ size_t conj::Size()
 {
     return vs.size();
 }
-
-vector<var> conj::GetVectorCopy()
-{
-    return vs;
-}

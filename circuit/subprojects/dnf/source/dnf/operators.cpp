@@ -17,7 +17,6 @@ dnf dnf::NEG()
 
 dnf dnf::AND(const dnf &d)
 {
-
     dnf res(varNum);
 
     for (conj cx : cs)
@@ -56,8 +55,7 @@ dnf dnf::NOR(const dnf &x)
 
 dnf dnf::XOR(const dnf &x)
 {
-    dnf res = AND(x).NEG().AND(OR(x));
-    return res;
+    return AND(x).NEG().AND(OR(x));
 }
 
 dnf dnf::NXOR(const dnf &x)

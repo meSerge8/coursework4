@@ -1,22 +1,17 @@
 #include "circuit.h"
 #include "dnf.h"
 string benchPath = "../benchmarks/",
-       filename = "S1488.BEN";
+       filename = "S27.BEN";
 
 int main()
 {
-
     circuit one;
     one.ImportBenchmark(benchPath + filename);
 
-    auto ds = one.ExportDNF();
+    list<dnf> ds = one.ExportDNF();
+    cout << "Convert to DNF" << endl
+         << ds << endl;
 
-    cout << ds << endl;
-
-    // auto b = one.ExportBDD();
-    // b.ExportGV("test832");
-
-    // one.PrintGates();
-    // one.ExportCircuit("S27_circuit.txt");
-    // cout << endl
+    bdd b = one.ExportBDD();
+    b.ExportGV(filename);
 }

@@ -8,16 +8,16 @@ using namespace std;
 
 enum gateType
 {
-    AND,   // 0
-    OR,    
-    NOT,   // 2
-    NAND,  // 3
-    NOR,   // 4
-    XOR,   // 5
-    NXOR,  // 6
-    DFF,   // 7
-    INPUT, // 8
-    NONE   // 9
+    AND,
+    OR,
+    NOT,
+    NAND,
+    NOR,
+    XOR,
+    NXOR,
+    DFF,
+    INPUT,
+    NONE
 };
 
 struct gate
@@ -27,4 +27,4 @@ struct gate
     list<gate *> subGates;
 };
 
-ostream &operator<<(ostream &, gate&);
+ostream &operator<<(ostream &, gate &);

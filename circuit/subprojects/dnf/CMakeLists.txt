@@ -14,9 +14,4 @@ add_library(DNF_LIB STATIC ${DNF_CXXS})
 target_include_directories(CONJ_LIB  PUBLIC ${HEADER_DIR})
 target_include_directories(DNF_LIB          PUBLIC ${HEADER_DIR})
 
-
-# add_executable(MAIN_DNF ${MAIN})
-
-
 target_link_libraries(DNF_LIB CONJ_LIB)
-# target_link_libraries(MAIN_DNF DNF_LIB CONJ_LIB) 
