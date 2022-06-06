@@ -19,8 +19,8 @@ void dnf::Reduce()
         if (absorb())
             continue;
 
-        if (glue())
-            continue;
+        // if (glue())
+        //     continue;
 
         break;
     }
