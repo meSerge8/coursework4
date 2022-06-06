@@ -51,3 +51,5 @@ vertex *bdd_manager::Apply_bin_core(vertex *v1, vertex *v2, bool (*oper)(bool, b
 
     return new non_term_vertex(varNew, lowNew, highNew);
 }
+
+

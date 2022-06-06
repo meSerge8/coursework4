@@ -40,7 +40,6 @@ public:
     u_int CountGates();
     u_int CountMemory();
 
-    // Print
     friend ostream &operator<<(ostream &, circuit &);
 
 private:

@@ -13,5 +13,7 @@ int main()
          << ds << endl;
 
     bdd b = one.ExportBDD();
+    auto d = b.ExportDNF();
+    cout << d << endl;
     b.ExportGV(filename);
 }
