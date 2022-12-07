@@ -53,7 +53,8 @@ void Test_BDD(string benchmarkPath)
              << c.CountGates() << "\t";
 
         timer.Start();
-        c.ExportBDD();
+        auto bddExp = c.GetBddExporter(FROM_INPUT);
+        bddExp->Export();
         double t = timer.Finish();
 
         printf("%.4f\t", t);
@@ -81,7 +82,8 @@ void Test_DNF_from_BDD(string benchmarkPath)
              << c.CountGates() << "\t";
 
         timer.Start();
-        bdd b = c.ExportBDD();
+        auto bddExp = c.GetBddExporter(FROM_INPUT);
+        bdd b = bddExp->Export();
         b.ExportDNF();
         double t = timer.Finish();
 
@@ -109,7 +111,8 @@ void Test_DNF_from_BDD_only_DNF(string benchmarkPath)
              << c.CountTriggers() << "\t"
              << c.CountGates() << "\t";
 
-        bdd b = c.ExportBDD();
+        auto bddExp = c.GetBddExporter(FROM_INPUT);
+        bdd b = bddExp->Export();
 
         timer.Start();
         b.ExportDNF();
@@ -140,7 +143,8 @@ void Test_DNF(string benchmarkPath)
              << c.CountGates() << "\t";
 
         timer.Start();
-        c.ExportDNF();
+        auto bddExp = c.GetBddExporter(FROM_INPUT);
+        bddExp->Export();
         double t = timer.Finish();
 
         printf("%.4f\t", t);

@@ -16,7 +16,8 @@ int main(const int argc, const char *argv[])
 
     c.ImportBenchmark(benchPath + filename);
 
-    auto b = c.ExportBDD();
+    auto bddExp = c.GetBddExporter(FROM_INPUT);
+    bdd b = bddExp->Export();
     b.ExportGV("test_basic");
 
     auto d = c.ExportDNF();

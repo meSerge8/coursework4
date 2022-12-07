@@ -1,21 +1,21 @@
 #pragma once
 
-#include <iostream>
+#include <exception>
 #include <fstream>
-#include <string>
+#include <iostream>
 #include <list>
 #include <map>
-#include <exception>
 #include <regex>
+#include <string>
 
 #include "bdd.h"
+#include "bddExporter.h"
 #include "dnf.h"
 #include "gate.h"
 
 using namespace std;
 
-class circuit
-{
+class circuit {
     list<gate *> gates,
         outputs,
         inputs;
@@ -24,7 +24,7 @@ class circuit
           outGates = 0,
           triggerGates = 0;
 
-public:
+   public:
     circuit();
     ~circuit();
 
@@ -40,9 +40,11 @@ public:
     u_int CountGates();
     u_int CountMemory();
 
+    IBddExporter *GetBddExporter(BddExporterType);
+
     friend ostream &operator<<(ostream &, circuit &);
 
-private:
+   private:
     // ImportBenchmark
     void ProcessLine(string);
     void ClearDFFs();
@@ -64,12 +66,6 @@ private:
 
     // Printer
     list<string> GetOutNames();
-
-    // Export as BDD
-    map<string, vertex *> MakeBasicMap();
-    vertex *MakeVertex(gate *, map<string, vertex *> *, bdd_manager *);
-    vertex *PerformOperation(gate *, list<vertex *>, bdd_manager *);
-    // void AddInputs(map<string, vertex *> *map);
 
     // Export as DNF
     void buildInputGates();

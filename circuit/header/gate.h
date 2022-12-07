@@ -1,13 +1,12 @@
 #pragma once
 
 #include <iostream>
-#include <string>
 #include <list>
+#include <string>
 
 using namespace std;
 
-enum gateType
-{
+enum gateType {
     AND,
     OR,
     NOT,
@@ -20,11 +19,11 @@ enum gateType
     NONE
 };
 
-struct gate
-{
+struct gate {
     string name;
     gateType type;
     list<gate *> subGates;
 };
 
 ostream &operator<<(ostream &, gate &);
+string printType(gateType);
