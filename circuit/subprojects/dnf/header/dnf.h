@@ -1,29 +1,28 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <iostream>
+#include <algorithm>
 #include <exception>
+#include <iostream>
 #include <list>
 #include <memory>
-#include <algorithm>
+#include <string>
+#include <vector>
 
 #include "conj.h"
 
 using namespace std;
 
-class dnf
-{
+class dnf {
     vector<conj> cs;
     u_int varNum;
     vector<string> names;
 
-public:
-    dnf(int variableNumber, bool constant = false); 
+   public:
+    dnf(int variableNumber, bool constant = false);
     dnf(int variableNumber, vector<string> variableNames, bool constant = false);
     dnf(int variableNumber, vector<conj> cs);
     dnf(const dnf &);
-    ~dnf(); 
+    ~dnf();
     dnf AND(const dnf &);
     dnf OR(const dnf &);
     dnf NAND(const dnf &);
@@ -31,20 +30,21 @@ public:
     dnf XOR(const dnf &);
     dnf NXOR(const dnf &);
     dnf NEG();
-    int GetVarNum(); 
+    int GetVarNum();
     bool GetConstant();
     void SetConstant(bool c);
     bool IsConstant();
-    void AddConjunction(conj);           
-    vector<conj> GetConjunctions();      
-    void SetNames(vector<string> names); 
+    void AddConjunction(conj);
+    vector<conj> GetConjunctions();
+    void SetNames(vector<string> names);
     void Reduce();
-    friend ostream &operator<<(ostream &, dnf &); 
-private:
+    friend ostream &operator<<(ostream &, dnf &);
+
+   private:
     bool shrinkConstants();
     bool absorb();
     bool glue();
-    string PrintConjunction(conj); 
+    string PrintConjunction(conj);
 };
 
 // Print

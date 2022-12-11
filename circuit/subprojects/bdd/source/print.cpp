@@ -1,15 +1,13 @@
 #include "bdd.h"
 
-ostream &operator<<(ostream &os, bdd &b)
-{
+ostream &operator<<(ostream &os, bdd &b) {
     os << "========== bdd ==========" << endl;
-    for (auto root : b.roots)
-    {
+    for (auto root : b.roots) {
         auto verts = BuildVertexList(root);
         os << endl
-          << "----- new root -----" << endl
-          << "amount of vertices: " << to_string(verts.size()) << endl
-          << endl;
+           << "----- new root -----" << endl
+           << "amount of vertices: " << to_string(verts.size()) << endl
+           << endl;
 
         for (auto v : verts)
             os << *v << endl;
@@ -17,7 +15,7 @@ ostream &operator<<(ostream &os, bdd &b)
         os << "----- new root end -----" << endl;
     }
     os << endl
-      << "========== bdd end ==========" << endl;
+       << "========== bdd end ==========" << endl;
 
     return os;
 }

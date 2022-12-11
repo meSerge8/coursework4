@@ -1,20 +1,17 @@
 #include "conj.h"
 
-conj::conj()
-{
+conj::conj() {
     isConstanta = false;
     constanta = false;
 }
 
-conj::conj(vector<var> initVs)
-{
+conj::conj(vector<var> initVs) {
     isConstanta = false;
     constanta = false;
     vs = initVs;
 }
 
-conj::conj(int size, bool cons) : vs(size)
-{
+conj::conj(int size, bool cons) : vs(size) {
     if (size == 0)
         throw logic_error("size must not be zero");
     for (var &v : vs)
@@ -24,8 +21,7 @@ conj::conj(int size, bool cons) : vs(size)
     constanta = cons;
 }
 
-conj::conj(const conj &copy)
-{
+conj::conj(const conj &copy) {
     vs = copy.vs;
     isConstanta = copy.isConstanta;
     constanta = copy.constanta;

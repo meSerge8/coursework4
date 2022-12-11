@@ -1,12 +1,10 @@
 #include "dnf.h"
 
-int dnf::GetVarNum()
-{
+int dnf::GetVarNum() {
     return varNum;
 }
 
-bool dnf::IsConstant()
-{
+bool dnf::IsConstant() {
     if (cs.size() == 0)
         throw logic_error("bad dnf");
 
@@ -16,8 +14,7 @@ bool dnf::IsConstant()
     return cs[0].IsConstant();
 }
 
-bool dnf::GetConstant()
-{
+bool dnf::GetConstant() {
     if (cs.size() != 1)
         throw logic_error("cs wrong size");
 
@@ -29,14 +26,12 @@ bool dnf::GetConstant()
     return c.GetConstant();
 }
 
-void dnf::SetConstant(bool c)
-{
+void dnf::SetConstant(bool c) {
     cs.clear();
     cs.push_back({varNum, c});
 }
 
-void dnf::AddConjunction(conj c)
-{
+void dnf::AddConjunction(conj c) {
     if (varNum != c.Size())
         throw logic_error("Wrong number of variables");
 
@@ -45,13 +40,11 @@ void dnf::AddConjunction(conj c)
     Reduce();
 }
 
-vector<conj> dnf::GetConjunctions()
-{
+vector<conj> dnf::GetConjunctions() {
     return cs;
 }
 
-void dnf::SetNames(vector<string> l)
-{
+void dnf::SetNames(vector<string> l) {
     if (varNum != l.size())
         throw logic_error("Wrong number of variables");
 

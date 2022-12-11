@@ -3,9 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <list>
-#include <vector>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "variable.h"
 #include "vertex.h"

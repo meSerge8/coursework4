@@ -6,16 +6,14 @@ string begining = "digraph BDD {",
        oneEdge = " [taillabel=\"1\" fontname=\"bold\"];",
        ending = "}";
 
-void bdd::ExportGV(string filename)
-{
+void bdd::ExportGV(string filename) {
     ofstream dotGV(filename + ".gv");
 
     dotGV << begining << endl
           << nodeShape << endl
           << BindOuts() << endl;
 
-    for (auto root : roots)
-    {
+    for (auto root : roots) {
         ClearMark(root);
         DrawVertexsRecursive(root, dotGV, 1);
         ClearMark(root);
@@ -25,14 +23,12 @@ void bdd::ExportGV(string filename)
     dotGV.close();
 }
 
-string bdd::BindOuts()
-{
+string bdd::BindOuts() {
     string res;
     auto itrOut = rootNames.begin();
     auto itrVs = roots.begin();
 
-    for (int i = 0; i < rootNames.size(); i++)
-    {
+    for (int i = 0; i < rootNames.size(); i++) {
         string outname = *itrOut,
                rootvtx = to_string((long)*itrVs);
 
@@ -45,8 +41,7 @@ string bdd::BindOuts()
     return res;
 }
 
-void bdd::DrawVertexsRecursive(vertex *v, ofstream &dotGV, bool m)
-{
+void bdd::DrawVertexsRecursive(vertex *v, ofstream &dotGV, bool m) {
     bool vMark = v->GetMark();
     if (vMark == m)
         return;
@@ -55,8 +50,7 @@ void bdd::DrawVertexsRecursive(vertex *v, ofstream &dotGV, bool m)
     string name = to_string((long)v),
            vertVar = v->GetVariable()->value;
 
-    if (v->IsTerminal())
-    {
+    if (v->IsTerminal()) {
         dotGV << name + "[shape=box label=\"" + vertVar + "\"];" << endl;
         return;
     }

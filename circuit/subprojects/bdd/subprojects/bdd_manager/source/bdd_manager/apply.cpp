@@ -1,7 +1,6 @@
 #include "bdd_manager.h"
 
-vertex *bdd_manager::Apply(list<vertex *> vs, bool (*oper)(bool, bool))
-{
+vertex *bdd_manager::Apply(list<vertex *> vs, bool (*oper)(bool, bool)) {
     if (vs.empty())
         throw logic_error("No gates for multi operation");
 
@@ -15,8 +14,7 @@ vertex *bdd_manager::Apply(list<vertex *> vs, bool (*oper)(bool, bool))
            *res = Apply_bin(one, two, oper),
            *buf;
 
-    for (itr++; itr != vs.end(); itr++)
-    {
+    for (itr++; itr != vs.end(); itr++) {
         buf = res;
         res = Apply_bin(res, *itr, oper);
         Utilize(buf);

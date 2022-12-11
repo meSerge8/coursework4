@@ -1,7 +1,6 @@
 #include "dnf.h"
 
-ostream &operator<<(ostream &os, dnf &d)
-{
+ostream &operator<<(ostream &os, dnf &d) {
     auto conjs = d.cs;
     os << "----- dnf -----" << endl
        << "amount of conjuctions: " << to_string(conjs.size()) << endl
@@ -18,14 +17,12 @@ ostream &operator<<(ostream &os, dnf &d)
     return os;
 }
 
-string dnf::PrintConjunction(conj c)
-{
+string dnf::PrintConjunction(conj c) {
     if (c.IsConstant())
         return c.GetConstant() ? "1" : "0";
 
     string res;
-    for (int i = 0; i < c.Size(); i++)
-    {
+    for (int i = 0; i < c.Size(); i++) {
         if (c.Get(i) == non)
             continue;
 
@@ -38,8 +35,7 @@ string dnf::PrintConjunction(conj c)
     return res;
 }
 
-ostream &operator<<(ostream &os, list<dnf> &dnfs)
-{
+ostream &operator<<(ostream &os, list<dnf> &dnfs) {
     os << "========== dnfs ==========" << endl
        << endl;
 

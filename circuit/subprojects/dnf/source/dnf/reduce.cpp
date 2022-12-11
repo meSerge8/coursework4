@@ -1,14 +1,11 @@
 #include "dnf.h"
 
-void dnf::Reduce()
-{
-    while (true)
-    {
+void dnf::Reduce() {
+    while (true) {
         if (cs.size() == 1)
             return;
 
-        if (cs.size() == 0)
-        {
+        if (cs.size() == 0) {
             cs = {{varNum, false}};
             return;
         }
@@ -26,21 +23,16 @@ void dnf::Reduce()
     }
 }
 
-bool dnf::shrinkConstants()
-{
-    for (auto itr = cs.begin(); itr != cs.end(); itr++)
-    {
+bool dnf::shrinkConstants() {
+    for (auto itr = cs.begin(); itr != cs.end(); itr++) {
         bool isC = itr->IsConstant();
         if (isC == false)
             continue;
 
-        if (itr->GetConstant() == true)
-        {
+        if (itr->GetConstant() == true) {
             cs = {{varNum, true}};
             return true;
-        }
-        else
-        {
+        } else {
             cs.erase(itr);
             return true;
         }
@@ -49,12 +41,9 @@ bool dnf::shrinkConstants()
     return false;
 }
 
-bool dnf::absorb()
-{
-    for (auto itr1 = cs.begin(); itr1 != cs.end(); itr1++)
-    {
-        for (auto itr2 = next(itr1, 1); itr2 != cs.end(); itr2++)
-        {
+bool dnf::absorb() {
+    for (auto itr1 = cs.begin(); itr1 != cs.end(); itr1++) {
+        for (auto itr2 = next(itr1, 1); itr2 != cs.end(); itr2++) {
             if (itr1->Size() != itr2->Size())
                 throw logic_error("cant process. Size must be equal");
 
@@ -82,17 +71,13 @@ bool dnf::absorb()
     return false;
 }
 
-bool dnf::glue()
-{
-    for (auto itr1 = cs.begin(); itr1 != cs.end(); itr1++)
-    {
-        for (auto itr2 = next(itr1, 1); itr2 != cs.end(); itr2++)
-        {
+bool dnf::glue() {
+    for (auto itr1 = cs.begin(); itr1 != cs.end(); itr1++) {
+        for (auto itr2 = next(itr1, 1); itr2 != cs.end(); itr2++) {
             if (itr1->Size() != itr2->Size())
                 throw logic_error("cant process. Size must be equal");
 
-            for (int i = 0; i < itr1->Size(); i++)
-            {
+            for (int i = 0; i < itr1->Size(); i++) {
                 if ((itr1->Get(i) xor itr2->Get(i)) != 0b11)
                     continue;
 
@@ -114,7 +99,3 @@ bool dnf::glue()
 
     return false;
 }
-
-
-
-

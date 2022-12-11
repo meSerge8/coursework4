@@ -1,7 +1,6 @@
 #include "conj.h"
 
-conj conj::operator*(const conj &c)
-{
+conj conj::operator*(const conj &c) {
     if (vs.size() != c.vs.size())
         throw invalid_argument("conjunctions must be the same size:" + to_string(vs.size()) + "|" + to_string(c.vs.size()));
 
@@ -13,8 +12,7 @@ conj conj::operator*(const conj &c)
 
     conj res(vs.size());
 
-    for (int i = 0; i < vs.size(); i++)
-    {
+    for (int i = 0; i < vs.size(); i++) {
         int z = vs[i] | c.vs[i];
 
         if (z == 0b11)
@@ -26,10 +24,8 @@ conj conj::operator*(const conj &c)
     return res;
 }
 
-vector<conj> conj::Negate()
-{
-    if (IsConstant())
-    {
+vector<conj> conj::Negate() {
+    if (IsConstant()) {
         vector<conj> res;
         conj r(vs.size(), not GetConstant());
         res.push_back(r);
@@ -38,8 +34,7 @@ vector<conj> conj::Negate()
 
     vector<conj> res;
 
-    for (int i = 0; i < vs.size(); i++)
-    {
+    for (int i = 0; i < vs.size(); i++) {
         int v = vs[i] xor 0b11;
 
         if (v == 0b11)
@@ -53,8 +48,7 @@ vector<conj> conj::Negate()
     return res;
 }
 
-bool conj::operator==(const conj &c)
-{
+bool conj::operator==(const conj &c) {
     if (isConstanta != c.isConstanta)
         return false;
 
@@ -64,12 +58,10 @@ bool conj::operator==(const conj &c)
     return vs == c.vs;
 }
 
-void conj::Set(int idx, var v)
-{
+void conj::Set(int idx, var v) {
     vs[idx] = v;
 
-    if (v != non)
-    {
+    if (v != non) {
         isConstanta = false;
         return;
     }
@@ -81,7 +73,6 @@ void conj::Set(int idx, var v)
     constanta = false;
 }
 
-var conj::Get(int idx)
-{
+var conj::Get(int idx) {
     return vs[idx];
 }

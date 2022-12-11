@@ -2,8 +2,7 @@
 
 #include "bdd_manager.h"
 
-int main()
-{
+int main() {
     bdd_manager man;
     auto v1 = man.CreateVertex("G1");
     auto v2 = man.CreateVertex("G2");

@@ -4,12 +4,10 @@ timer::timer() {}
 
 timer::~timer() {}
 
-void timer::Start()
-{
-     startTime = clock();
+void timer::Start() {
+    startTime = clock();
 }
 
-double timer::Finish()
-{
-     return (double)(clock() - startTime) / CLOCKS_PER_SEC;
+double timer::Finish() {
+    return (double)(clock() - startTime) / CLOCKS_PER_SEC;
 }

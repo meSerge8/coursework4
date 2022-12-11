@@ -1,9 +1,7 @@
 #include "conj.h"
 
-ostream &operator<<(ostream &os, conj &c)
-{
-    if (c.IsConstant())
-    {
+ostream &operator<<(ostream &os, conj &c) {
+    if (c.IsConstant()) {
         os << "Constanta ";
         if (c.GetConstant())
             os << "1";
@@ -13,8 +11,7 @@ ostream &operator<<(ostream &os, conj &c)
         return os;
     }
 
-    for (size_t i = 0; i < c.vs.size(); i++)
-    {
+    for (size_t i = 0; i < c.vs.size(); i++) {
         if (c.vs[i] == non)
             continue;
 

@@ -1,12 +1,10 @@
 #include "conj.h"
 
-bool conj::GetConstant()
-{
+bool conj::GetConstant() {
     return constanta;
 }
 
-void conj::SetConstant(bool c)
-{
+void conj::SetConstant(bool c) {
     isConstanta = true;
     constanta = c;
 
@@ -14,12 +12,10 @@ void conj::SetConstant(bool c)
         v = non;
 }
 
-bool conj::IsConstant()
-{
+bool conj::IsConstant() {
     return isConstanta;
 }
 
-size_t conj::Size()
-{
+size_t conj::Size() {
     return vs.size();
 }

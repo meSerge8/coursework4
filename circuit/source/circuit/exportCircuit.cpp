@@ -1,7 +1,6 @@
 #include "circuit.h"
 
-void circuit::ExportCircuit(string fileName)
-{
+void circuit::ExportCircuit(string fileName) {
     ofstream res_file(fileName);
 
     if (not res_file)
@@ -19,8 +18,7 @@ void circuit::ExportCircuit(string fileName)
     delete nim;
 }
 
-map<string, u_int> *circuit::BuildNameIdxMap()
-{
+map<string, u_int> *circuit::BuildNameIdxMap() {
     auto res = new map<string, u_int>;
     u_int idx = 0;
     for (auto i : gates)
@@ -28,8 +26,7 @@ map<string, u_int> *circuit::BuildNameIdxMap()
     return res;
 }
 
-void circuit::WriteFirstLine(ofstream &res_file)
-{
+void circuit::WriteFirstLine(ofstream &res_file) {
     u_int counts[] = {CountInputs(), CountOutputs(), CountMemory(), CountOPGates()};
 
     for (auto i : counts)
@@ -40,18 +37,15 @@ void circuit::WriteFirstLine(ofstream &res_file)
 
 void circuit::WriteSecondLine(ofstream &res_file) {}
 
-void circuit::WriteThirdLine(ofstream &res_file, map<string, u_int> *nim)
-{
+void circuit::WriteThirdLine(ofstream &res_file, map<string, u_int> *nim) {
     for (auto i : outputs)
         res_file << to_string(nim->at(i->name)) << " ";
 
     res_file << endl;
 }
 
-void circuit::WriteLastLines(ofstream &res_file, map<string, u_int> *nim)
-{
-    for (auto itr : gates)
-    {
+void circuit::WriteLastLines(ofstream &res_file, map<string, u_int> *nim) {
+    for (auto itr : gates) {
         if (itr->type == INPUT or itr->type == DFF)
             continue;
 
@@ -64,18 +58,15 @@ void circuit::WriteLastLines(ofstream &res_file, map<string, u_int> *nim)
     }
 }
 
-u_int circuit::CountInputs()
-{
+u_int circuit::CountInputs() {
     return inGates;
 }
 
-u_int circuit::CountOutputs()
-{
+u_int circuit::CountOutputs() {
     return outGates;
 }
 
-u_int circuit::CountOPGates()
-{
+u_int circuit::CountOPGates() {
     u_int count = 0;
     for (auto g : gates)
         if (g->type != INPUT)
@@ -84,17 +75,14 @@ u_int circuit::CountOPGates()
     return count;
 }
 
-u_int circuit::CountTriggers()
-{
+u_int circuit::CountTriggers() {
     return triggerGates;
 }
 
-u_int circuit::CountGates()
-{
+u_int circuit::CountGates() {
     return gates.size();
 }
 
-u_int circuit::CountMemory()
-{
+u_int circuit::CountMemory() {
     return 0;
 }

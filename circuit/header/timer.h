@@ -1,16 +1,16 @@
 #pragma once
+#include <time.h>
+
 #include <iostream>
 #include <string>
-#include <time.h>
 
 using namespace std;
 
-class timer
-{
-private:
+class timer {
+   private:
     clock_t startTime;
 
-public:
+   public:
     timer();
     ~timer();
 

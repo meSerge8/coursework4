@@ -4,16 +4,14 @@ string begining = "digraph BDD {",
        nodeShape = "node [shape=circle];",
        ending = "}";
 
-void bdd_manager::ExportPNG(list<string> *outs, list<vertex *> *vs, string filename)
-{
+void bdd_manager::ExportPNG(list<string> *outs, list<vertex *> *vs, string filename) {
     ofstream dotGV(filename + ".gv");
 
     dotGV << begining << endl
           << nodeShape << endl
           << BindOuts(outs, vs) << endl;
 
-    for (auto root : *vs)
-    {
+    for (auto root : *vs) {
         ClearMark(root);
         DrawVertexsRecursive(root, &dotGV, 1);
         ClearMark(root);
@@ -23,8 +21,7 @@ void bdd_manager::ExportPNG(list<string> *outs, list<vertex *> *vs, string filen
     dotGV.close();
 }
 
-void bdd_manager::DrawVertexsRecursive(vertex *v, ofstream *dotGV, bool m)
-{
+void bdd_manager::DrawVertexsRecursive(vertex *v, ofstream *dotGV, bool m) {
     bool vMark = v->GetMark();
     if (vMark == m)
         return;
@@ -33,8 +30,7 @@ void bdd_manager::DrawVertexsRecursive(vertex *v, ofstream *dotGV, bool m)
     string name = to_string((long)v),
            vertVar = v->GetVariable()->value;
 
-    if (v->IsTerminal())
-    {
+    if (v->IsTerminal()) {
         *dotGV << name + "[shape=box label=\"" + vertVar + "\"];" << endl;
         return;
     }
@@ -53,14 +49,12 @@ void bdd_manager::DrawVertexsRecursive(vertex *v, ofstream *dotGV, bool m)
     DrawVertexsRecursive(high, dotGV, m);
 }
 
-string bdd_manager::BindOuts(list<string> *outs, list<vertex *> *vs)
-{
+string bdd_manager::BindOuts(list<string> *outs, list<vertex *> *vs) {
     string res = "";
     auto itrOut = outs->begin();
     auto itrVs = vs->begin();
 
-    for (int i = 0; i < outs->size(); i++)
-    {
+    for (int i = 0; i < outs->size(); i++) {
         auto outname = *itrOut;
         auto rootvtx = to_string((long)*itrVs);
 

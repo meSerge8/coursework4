@@ -1,7 +1,6 @@
 #include "dnf_from_bdd.h"
 
-ostream &operator<<(ostream &os, dnf_from_bdd &d)
-{
+ostream &operator<<(ostream &os, dnf_from_bdd &d) {
     auto conjs = d.conjuctions;
     os << "----- dnf -----" << endl
        << "amount of conjuctions: " << to_string(conjs.size()) << endl
@@ -15,13 +14,11 @@ ostream &operator<<(ostream &os, dnf_from_bdd &d)
     return os;
 }
 
-string dnf_from_bdd::PrintConjunction(conjunction c)
-{
+string dnf_from_bdd::PrintConjunction(conjunction c) {
     int counter = -1;
     string res, sample;
 
-    for (auto var : c)
-    {
+    for (auto var : c) {
         counter++;
         if (var == none)
             continue;
@@ -36,8 +33,7 @@ string dnf_from_bdd::PrintConjunction(conjunction c)
     return res;
 }
 
-ostream &operator<<(ostream &os, list<dnf_from_bdd> &dnfs)
-{
+ostream &operator<<(ostream &os, list<dnf_from_bdd> &dnfs) {
     os << "========== dnfs ==========" << endl
        << endl;
 

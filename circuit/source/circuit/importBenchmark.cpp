@@ -7,11 +7,8 @@ const regex INPUT_R("INPUT\\((\\w+\\.?\\w*)\\)"),
     GATE_R("(\\w+\\.?\\w*)=(\\w+\\.?\\w*)\\((.*)\\)"),
     DFF_R("(\\w+\\.?\\w*)=DFF\\((.*)\\)");
 
-void circuit::ImportBenchmark(string fileName)
-{
-
-    if (gates.size() != 0)
-    {
+void circuit::ImportBenchmark(string fileName) {
+    if (gates.size() != 0) {
         throw logic_error("benchmark is already imported");
     }
 
@@ -20,8 +17,7 @@ void circuit::ImportBenchmark(string fileName)
         throw invalid_argument("File doesn't exist");
 
     string one;
-    while (getline(bench, one))
-    {
+    while (getline(bench, one)) {
         auto noSpaces = regex_replace(one, regex("\\s"), "");
         ProcessLine(noSpaces);
     }
@@ -31,37 +27,30 @@ void circuit::ImportBenchmark(string fileName)
     CheckForNONE();
 }
 
-void circuit::ProcessLine(string line)
-{
+void circuit::ProcessLine(string line) {
     smatch m;
 
-    if (regex_match(line, m, INPUT_R))
-    {
+    if (regex_match(line, m, INPUT_R)) {
         AddInput(m[1]);
     }
 
-    else if (regex_match(line, m, OUTPUT_R))
-    {
+    else if (regex_match(line, m, OUTPUT_R)) {
         AddOutput(m[1]);
     }
 
-    else if (regex_match(line, m, COMMENT_R))
-    {
+    else if (regex_match(line, m, COMMENT_R)) {
         return;
     }
 
-    else if (regex_match(line, m, EMPTY_R))
-    {
+    else if (regex_match(line, m, EMPTY_R)) {
         return;
     }
 
-    else if (regex_match(line, m, DFF_R))
-    {
+    else if (regex_match(line, m, DFF_R)) {
         AddDFF(m);
     }
 
-    else if (regex_match(line, m, GATE_R))
-    {
+    else if (regex_match(line, m, GATE_R)) {
         AddOP(m);
     }
 
@@ -69,28 +58,24 @@ void circuit::ProcessLine(string line)
         throw invalid_argument("Unknown command");
 }
 
-void circuit::ClearDFFs()
-{
+void circuit::ClearDFFs() {
     for (auto &&g : gates)
         if (g->type == DFF)
             g->subGates.clear();
 }
 
-void circuit::CheckForNONE()
-{
+void circuit::CheckForNONE() {
     for (auto g : gates)
         if (g->type == NONE)
             throw logic_error("No init for " + g->name);
 }
 
-void circuit::AddInput(string name)
-{
+void circuit::AddInput(string name) {
     auto one = AddGate(name);
     if (one->type == NONE)
         one->type = INPUT;
 
-    else if (one->type != INPUT)
-    {
+    else if (one->type != INPUT) {
         auto er_str = "Attempt to re-init " + name + " as input gate";
         throw logic_error(er_str);
     }
@@ -98,21 +83,18 @@ void circuit::AddInput(string name)
     inGates++;
 }
 
-void circuit::AddOutput(string name)
-{
+void circuit::AddOutput(string name) {
     auto one = AddGate(name);
     outputs.push_back(one);
-    
+
     outGates++;
 }
 
-void circuit::AddOP(smatch m)
-{
+void circuit::AddOP(smatch m) {
     string name = m[1];
     auto gate = AddGate(name);
 
-    if (gate->type != NONE)
-    {
+    if (gate->type != NONE) {
         auto er_str = "Attempt to re-init " + name + " as operator gate";
         throw logic_error(er_str);
     }
@@ -121,8 +103,7 @@ void circuit::AddOP(smatch m)
     gate->type = GetType(m[2]);
 }
 
-void circuit::AddDFF(smatch m)
-{
+void circuit::AddDFF(smatch m) {
     AddInput(m[1]);
     AddOutput(m[2]);
 
@@ -131,8 +112,7 @@ void circuit::AddDFF(smatch m)
     outGates--;
 }
 
-list<gate *> circuit::ParceGatesArgs(string args)
-{
+list<gate *> circuit::ParceGatesArgs(string args) {
     list<gate *> res;
     regex argR("\\w+\\.?\\w*");
     smatch m;
@@ -140,8 +120,7 @@ list<gate *> circuit::ParceGatesArgs(string args)
     sregex_iterator beg{args.cbegin(), args.cend(), argR},
         end{};
 
-    for (auto i = beg; i != end; i++)
-    {
+    for (auto i = beg; i != end; i++) {
         auto gateName = i->str();
         auto gate = AddGate(gateName);
         res.push_back(gate);
@@ -150,20 +129,17 @@ list<gate *> circuit::ParceGatesArgs(string args)
     return res;
 }
 
-gate *circuit::AddGate(string name)
-{
+gate *circuit::AddGate(string name) {
     list<gate *> emptyList;
     auto one = Find(gates, name);
-    if (one == nullptr)
-    {
+    if (one == nullptr) {
         one = new gate{name, NONE, emptyList};
         gates.push_back(one);
     }
     return one;
 }
 
-gateType circuit::GetType(string t)
-{
+gateType circuit::GetType(string t) {
     if (t == "AND")
         return AND;
     if (t == "OR")

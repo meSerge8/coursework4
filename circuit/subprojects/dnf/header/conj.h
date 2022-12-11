@@ -1,26 +1,24 @@
 #pragma once
 
-#include <vector>
 #include <iostream>
-#include <string>
 #include <list>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-enum var
-{
+enum var {
     non,
     neg,
     pos,
 };
 
-class conj
-{
+class conj {
     bool isConstanta,
         constanta;
     vector<var> vs;
 
-public:
+   public:
     conj();
     conj(vector<var>);
     conj(int size, bool constanta = 0);
@@ -39,6 +37,3 @@ public:
     void Set(int idx, var v);
     var Get(int idx);
 };
-
-
-

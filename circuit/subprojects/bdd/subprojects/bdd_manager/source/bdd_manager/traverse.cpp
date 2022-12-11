@@ -1,7 +1,6 @@
 #include "bdd_manager.h"
 
-void bdd_manager::TraverseSample(vertex *v, bool m)
-{
+void bdd_manager::TraverseSample(vertex *v, bool m) {
     bool vMark = v->GetMark();
 
     if (vMark == m)
@@ -15,16 +14,14 @@ void bdd_manager::TraverseSample(vertex *v, bool m)
     TraverseSample(v->GetLow(), m);
     TraverseSample(v->GetHigh(), m);
 
-    //action
+    // action
 }
 
-void bdd_manager::Traverse(vertex *v, void (*foo)(vertex *))
-{
+void bdd_manager::Traverse(vertex *v, void (*foo)(vertex *)) {
     Traverse_core(v, foo, 1);
 }
 
-void bdd_manager::Traverse_core(vertex *v, void (*foo)(vertex *), bool m)
-{
+void bdd_manager::Traverse_core(vertex *v, void (*foo)(vertex *), bool m) {
     bool vMark = v->GetMark();
 
     if (vMark == m)
@@ -40,8 +37,7 @@ void bdd_manager::Traverse_core(vertex *v, void (*foo)(vertex *), bool m)
     foo(v);
 }
 
-void bdd_manager::ClearMark(vertex *v)
-{
+void bdd_manager::ClearMark(vertex *v) {
     if (v->GetMark() == 0)
         return;
 

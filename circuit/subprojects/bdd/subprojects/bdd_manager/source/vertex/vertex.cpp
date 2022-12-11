@@ -2,14 +2,12 @@
 
 vertex::vertex() {}
 
-vertex::vertex(variable *v)
-{
+vertex::vertex(variable *v) {
     var = v;
     mark = 0;
 }
 
-vertex::vertex(variable *v, u_int32_t i)
-{
+vertex::vertex(variable *v, u_int32_t i) {
     var = v;
     id = i;
     mark = 0;
@@ -17,8 +15,7 @@ vertex::vertex(variable *v, u_int32_t i)
 
 vertex::~vertex() {}
 
-bool vertex::operator==(vertex &two)
-{
+bool vertex::operator==(vertex &two) {
     if (GetVariable() != two.GetVariable())
         return false;
 
@@ -38,15 +35,13 @@ void vertex::SwitchMark() { mark = not mark; }
 void vertex::SetId(u_int32_t i) { id = i; }
 u_int32_t vertex::GetId() { return id; }
 
-string vertex::InfoVertex()
-{
+string vertex::InfoVertex() {
     return InfoVariable(*var) + " | " +
            "id: " + to_string(id) + " | " +
            "mark: " + to_string(mark);
 }
 
-ostream &operator<<(ostream &r, vertex &v)
-{
+ostream &operator<<(ostream &r, vertex &v) {
     r << v.Info();
     return r;
 }
