@@ -7,15 +7,14 @@
 
 using namespace std;
 
-class vertex
-{
-private:
+class vertex {
+   private:
     variable *var;
     u_int32_t id = 0;
     bool mark = 0;
 
-public:
-    //Constructors
+   public:
+    // Constructors
     vertex();
     vertex(variable *);
     vertex(variable *, u_int32_t);
@@ -49,9 +48,8 @@ public:
 
 //----------------------------------------------------------
 
-class term_vertex : public vertex
-{
-public:
+class term_vertex : public vertex {
+   public:
     term_vertex();
     term_vertex(variable *);
     term_vertex(variable *, u_int32_t);
@@ -69,13 +67,12 @@ public:
 
 //----------------------------------------------------------
 
-class non_term_vertex : public vertex
-{
-private:
+class non_term_vertex : public vertex {
+   private:
     vertex *low;
     vertex *high;
 
-public:
+   public:
     non_term_vertex(vertex *lowOne, vertex *highOne);
     non_term_vertex(variable *, u_int32_t, vertex *, vertex *);
     non_term_vertex(variable *, vertex *, vertex *);
@@ -90,6 +87,3 @@ public:
 
     string Info() override;
 };
-
-
-

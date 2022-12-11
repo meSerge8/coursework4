@@ -4,15 +4,14 @@ BddExporterFromOutput::BddExporterFromOutput(list<gate *> outGates) {
     this->outGates = outGates;
 }
 
-bdd BddExporterFromOutput::Export() {
-    std::cout << *this->outGates.begin() << endl;
-    bdd result;
+bdd *BddExporterFromOutput::Export() {
+    bdd *result = new bdd();
     this->gateVertMap = new map<string, vertex *>();
-    this->manager = result.GetManager();
+    this->manager = result->GetManager();
 
     for (auto outGate : this->outGates) {
         auto root = makeVertex(outGate);
-        result.AddRoot(root, outGate->name);
+        result->AddRoot(root, outGate->name);
     }
 
     return result;

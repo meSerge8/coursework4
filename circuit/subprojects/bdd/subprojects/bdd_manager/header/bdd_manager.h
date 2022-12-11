@@ -1,22 +1,22 @@
 #pragma once
 
-#include <iostream>
 #include <fstream>
-#include <string>
+#include <iostream>
 #include <list>
+#include <vector>
 #include <map>
+#include <string>
 
-#include "vertex.h"
 #include "variable.h"
+#include "vertex.h"
 
 using namespace std;
 
-class bdd_manager
-{
+class bdd_manager {
     list<variable *> vars;
     variable *zeroVar, *oneVar;
 
-public:
+   public:
     bdd_manager();
     ~bdd_manager();
 
@@ -46,6 +46,9 @@ public:
     vertex *Reduce(vertex *rootVertex);
 
     list<variable *> GetVariables();
+    vector<variable *> GetVariablesNonTerm();
+    variable *GetOneVariable();
+    variable *GetZeroVariable();
 
     void PrintVariables();
 
@@ -53,7 +56,7 @@ public:
                    list<vertex *> *vertexList,
                    string filename);
 
-private:
+   private:
     // Create
     void UpdateTerminals();
 

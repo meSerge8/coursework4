@@ -6,9 +6,9 @@ BddExporterFromInput::BddExporterFromInput(list<gate *> gates) {
     }
 }
 
-bdd BddExporterFromInput::Export() {
-    bdd result;
-    this->manager = result.GetManager();
+bdd *BddExporterFromInput::Export() {
+    bdd *result = new bdd();
+    this->manager = result->GetManager();
     this->gates = sortTopological();
     auto allSubgates = getAllSubgates();
 
@@ -16,7 +16,7 @@ bdd BddExporterFromInput::Export() {
         auto v = buildVertex(g);
         this->vertices.push_back(v);
         if (find(allSubgates.begin(), allSubgates.end(), g) == allSubgates.end()) {
-            result.AddRoot(v, g->name);
+            result->AddRoot(v, g->name);
         }
     }
 
@@ -97,24 +97,6 @@ queue<int> BddExporterFromInput::initQueue(vector<int> in_degrees) {
     return q;
 }
 
-list<vertex *> BddExporterFromInput::getSubvertices(gate *g) {
-    list<vertex *> result;
-    auto itrBegin = this->gates.begin();
-    auto itrEnd = this->gates.end();
-
-    for (gate *subGate : g->subGates) {
-        auto itr = find(itrBegin, itrEnd, subGate);
-        if (itr == itrEnd) {
-            throw logic_error("subGate not found");
-        }
-
-        int i = itr - itrBegin;
-        result.push_back(this->vertices[i]);
-    }
-
-    return result;
-}
-
 vertex *BddExporterFromInput::buildVertex(gate *g) {
     auto subvertices = getSubvertices(g);
 
@@ -143,4 +125,22 @@ vertex *BddExporterFromInput::buildVertex(gate *g) {
         default:
             throw logic_error("Can't deduce what to do");
     }
+}
+
+list<vertex *> BddExporterFromInput::getSubvertices(gate *g) {
+    list<vertex *> result;
+    auto itrBegin = this->gates.begin();
+    auto itrEnd = this->gates.end();
+
+    for (gate *subGate : g->subGates) {
+        auto itr = find(itrBegin, itrEnd, subGate);
+        if (itr == itrEnd) {
+            throw logic_error("subGate not found");
+        }
+
+        int i = itr - itrBegin;
+        result.push_back(this->vertices[i]);
+    }
+
+    return result;
 }

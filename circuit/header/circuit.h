@@ -11,6 +11,7 @@
 #include "bdd.h"
 #include "bddExporter.h"
 #include "dnf.h"
+#include "dnfExporter.h"
 #include "gate.h"
 
 using namespace std;
@@ -30,7 +31,6 @@ class circuit {
 
     void ImportBenchmark(string);
     void ExportCircuit(string);
-    bdd ExportBDD();
     list<dnf> ExportDNF();
 
     u_int CountInputs();
@@ -41,6 +41,7 @@ class circuit {
     u_int CountMemory();
 
     IBddExporter *GetBddExporter(BddExporterType);
+    IDnfExporter *GetDnfExporter(DnfExporterType);
 
     friend ostream &operator<<(ostream &, circuit &);
 

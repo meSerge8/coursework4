@@ -5,8 +5,7 @@
 
 using namespace std;
 
-struct variable
-{
+struct variable {
     string value;
     u_int32_t index;
 };

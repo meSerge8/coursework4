@@ -6,13 +6,16 @@ string benchPath = "../benchmarks/",
 int main() {
     circuit one;
     one.ImportBenchmark(benchPath + filename);
-    auto x = one.GetBddExporter(FROM_INPUT);
-    bdd b = x->Export();
-    b.ExportGV(filename);
+    // auto x = one.GetBddExporter(FROM_INPUT);
+    // bdd b = x->Export();
+    // b.ExportGV(filename);
 
-    // list<dnf> ds = one.ExportDNF();
-    // cout << "Convert to DNF" << endl
-    //      << ds << endl;
+    auto dnfExp = one.GetDnfExporter(FROM_BDD);
+    auto ds = dnfExp->Export();
+
+    for (auto d : ds) {
+        cout << d << endl;
+    }
 
     // bdd b = one.ExportBDD();
     // b.ExportGV(filename);

@@ -1,19 +1,19 @@
 #pragma once
 
 #include <iostream>
-#include "bdd_manager.h"
 #include <vector>
+
+#include "bdd_manager.h"
 #include "dnf_from_bdd.h"
 
 using namespace std;
 
-class bdd
-{
+class bdd {
     list<vertex *> roots;
     list<string> rootNames;
     bdd_manager bdd_mng;
 
-public:
+   public:
     bdd();
     bdd(list<vertex *> roots);
     bdd(list<vertex *> roots, list<string> rootNames);
@@ -27,8 +27,9 @@ public:
 
     bdd_manager *GetManager();
     bool AddRoot(vertex *root, string name);
+    vector<vertex *> GetRoots();
 
-private:
+   private:
     string BindOuts();
     void DrawVertexsRecursive(vertex *v, ofstream &dotGV, bool m);
 

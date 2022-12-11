@@ -12,7 +12,7 @@ const BddExporterType FROM_INPUT = 1;
 
 class IBddExporter {
    public:
-    virtual bdd Export() = 0;
+    virtual bdd *Export() = 0;
 };
 
 class BddExporterFromOutput : public IBddExporter {
@@ -23,7 +23,7 @@ class BddExporterFromOutput : public IBddExporter {
 
    public:
     BddExporterFromOutput(list<gate *> outGates);
-    bdd Export();
+    bdd *Export();
 
    private:
     vertex *makeVertex(gate *);
@@ -38,7 +38,7 @@ class BddExporterFromInput : public IBddExporter {
 
    public:
     BddExporterFromInput(list<gate *> gates);
-    bdd Export();
+    bdd *Export();
 
     vector<gate *> sortTopological();
     vector<int> initInDegrees();
