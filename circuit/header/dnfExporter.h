@@ -1,5 +1,9 @@
 #pragma once
 
+#include <algorithm>
+#include <queue>
+#include <vector>
+
 #include "bdd.h"
 #include "bddExporter.h"
 #include "dnf.h"
@@ -7,6 +11,7 @@
 
 typedef int DnfExporterType;
 const DnfExporterType FROM_BDD = 0;
+const DnfExporterType DNF_FROM_INPUT = 1;
 
 class IDnfExporter {
    public:
@@ -37,4 +42,24 @@ class DnfExporterFromBDD : public IDnfExporter {
     dnf buildTerminal(vertex *);
     dnf buildNonTerminal(vertex *);
     dnf findDnfByVertex(vertex *);
+};
+
+class DnfExporterFromUnput : public IDnfExporter {
+   private:
+    vector<gate *> gates;
+    vector<gate *> inputGates;
+    vector<gate *> allSubgates;
+    vector<dnf> dnfs;
+
+   public:
+    DnfExporterFromUnput(vector<gate *>);
+    vector<dnf> Export();
+
+   private:
+    void sortTopological();
+    vector<string> buildNames();
+    dnf buildDNF(gate *);
+    dnf buildInputDNF(gate *);
+    list<dnf> getSubDnfs(gate *);
+    dnf apply(dnf &, dnf &, gateType);
 };
