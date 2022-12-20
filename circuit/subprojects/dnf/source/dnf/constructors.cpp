@@ -1,8 +1,8 @@
 #include "dnf.h"
 
 dnf::dnf(int variableNumber, bool constant) {
-    varNum = variableNumber;
-    cs.push_back({varNum, constant});
+    this->varNum = variableNumber;
+    this->cs = {{this->varNum, constant}};
 }
 
 dnf::dnf(int variableNumber, vector<string> variableNames, bool constant)

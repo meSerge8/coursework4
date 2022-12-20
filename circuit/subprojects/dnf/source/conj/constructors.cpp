@@ -5,18 +5,23 @@ conj::conj() {
     constanta = false;
 }
 
-conj::conj(vector<var> initVs) {
-    isConstanta = false;
-    constanta = false;
-    vs = initVs;
+conj::conj(vector<var> initVs, bool cons) {
+    this->vs = initVs;
+    for (var v : this->vs) {
+        if (v != non) {
+            this->isConstanta = false;
+            this->constanta = false;
+            return;
+        }
+    }
+
+    this->isConstanta = true;
+    this->constanta = cons;
 }
 
-conj::conj(int size, bool cons) : vs(size) {
+conj::conj(size_t size, bool cons) : vs(size, non) {
     if (size == 0)
         throw logic_error("size must not be zero");
-    for (var &v : vs)
-        v = non;
-
     isConstanta = true;
     constanta = cons;
 }

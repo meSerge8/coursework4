@@ -32,12 +32,23 @@ void dnf::SetConstant(bool c) {
 }
 
 void dnf::AddConjunction(conj c) {
-    if (varNum != c.Size())
-        throw logic_error("Wrong number of variables");
+    if (c.IsConstant()) {
+        if (c.GetConstant()) {
+            this->cs = {c};
+        } else {
+            return;
+        }
+    }
 
-    cs.push_back(c);
-
-    Reduce();
+    if (IsConstant()) {
+        if (GetConstant()) {
+            return;
+        } else {
+            this->cs = {c};
+        }
+    } else {
+        this->cs.push_back(c);
+    }
 }
 
 vector<conj> dnf::GetConjunctions() {

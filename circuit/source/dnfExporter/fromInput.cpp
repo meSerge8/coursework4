@@ -2,8 +2,10 @@
 
 DnfExporterFromUnput::DnfExporterFromUnput(vector<gate *> gates) {
     this->gates = gates;
-    for (auto g : this->gates) {
-        this->inputGates.push_back(g);
+    for (gate *g : this->gates) {
+        if (g->type == INPUT) {
+            this->inputGates.push_back(g);
+        }
     }
 }
 
@@ -14,7 +16,9 @@ vector<dnf> DnfExporterFromUnput::Export() {
 
     for (gate *g : this->gates) {
         dnf d = buildDNF(g);
+        d.SetNames(names);
         this->dnfs.push_back(d);
+
         if (find(allSubgates.begin(), allSubgates.end(), g) == allSubgates.end()) {
             d.SetNames(names);
             result.push_back(d);
@@ -113,7 +117,7 @@ dnf DnfExporterFromUnput::buildInputDNF(gate *g) {
     }
 
     conj c(this->inputGates.size());
-    c.Set(i, pos);
+    c.Set(i, pos, false);
 
     return {this->inputGates.size(), {c}};
 }

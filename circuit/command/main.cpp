@@ -1,7 +1,7 @@
 #include "circuit.h"
 #include "dnf.h"
 string benchPath = "../benchmarks/",
-       filename = "S298.BEN";
+       filename = "S832.BEN";
 
 int main() {
     circuit one;
@@ -12,8 +12,9 @@ int main() {
 
     b->ExportGV(filename);
 
-    auto dnfExp = one.GetDnfExporter(DNF_FROM_INPUT);
+    auto dnfExp = one.GetDnfExporter(FROM_BDD);
     auto ds = dnfExp->Export();
+
     for (auto d : ds) {
         cout << d << endl;
     }

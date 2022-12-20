@@ -1,54 +1,105 @@
 #include "dnf.h"
 
-dnf dnf::NEG() {
-    dnf res(varNum, true);
-
-    for (conj c : cs) {
-        auto negs = c.Negate();
-        dnf neg(varNum, negs);
-        dnf res2 = res.AND(neg);
-        res = res2;
-    }
-
-    return res;
-}
-
-dnf dnf::AND(const dnf &d) {
-    dnf res(varNum);
-
-    for (conj cx : cs) {
+dnf dnf::and_basic(const dnf &d) {
+    dnf res(this->varNum, false);
+    for (conj cx : this->cs) {
         for (conj cy : d.cs) {
-            auto mul = cx * cy;
-            res.AddConjunction(mul);
+            res.AddConjunction(cx * cy);
         }
     }
 
     return res;
 }
 
-dnf dnf::OR(const dnf &x) {
+dnf dnf::or_basic(const dnf &x) {
     dnf res(*this);
 
-    for (auto &c : x.cs)
+    for (auto &c : x.cs) {
         res.AddConjunction(c);
+    }
 
     return res;
 }
 
+dnf dnf::neg_basic() {
+    dnf res(varNum, true);
+
+    for (conj c : this->cs) {
+        auto negs = c.Negate();
+        dnf neg(varNum, negs);
+        res = res.and_basic(neg);
+        res.Reduce();
+    }
+
+    return res;
+}
+
+dnf dnf::NEG() {
+    // cout << "NEG" << endl;
+    dnf res = neg_basic();
+    // res.Reduce();
+    return res;
+}
+
+dnf dnf::AND(const dnf &x) {
+    // cout << "AND" << endl;
+    dnf res = and_basic(x);
+    res.Reduce();
+    return res;
+}
+
+dnf dnf::OR(const dnf &x) {
+    // cout << "OR" << endl;
+    dnf res = or_basic(x);
+    res.Reduce();
+    return res;
+}
+
 dnf dnf::NAND(const dnf &x) {
-    dnf a = AND(x);
-    dnf b = a.NEG();
-    return b;
+    // cout << "NAND" << endl;
+    // dnf a = neg_basic();
+    // dnf b = x;
+    // b = b.neg_basic();
+    // dnf res = a.or_basic(b);
+    // res.Reduce();
+    // return res;
+
+    // cout << "NAND" << endl;
+    dnf res = and_basic(x);
+    res.Reduce();
+    res = res.neg_basic();
+    // res.Reduce();
+    return res;
 }
 
 dnf dnf::NOR(const dnf &x) {
-    return OR(x).NEG();
+    // cout << "NOR" << endl;
+    // dnf a = neg_basic();
+    // dnf b = x;
+    // b = b.neg_basic();
+    // dnf res = a.and_basic(b);
+    // res.Reduce();
+    // return res;
+
+    // cout << "NOR" << endl;
+    dnf res = or_basic(x);
+    res.Reduce();
+    // cout << res << endl;
+    res = res.neg_basic();
+    // res.Reduce();
+    return res;
 }
 
 dnf dnf::XOR(const dnf &x) {
-    return AND(x).NEG().AND(OR(x));
+    // cout << "XOR" << endl;
+    dnf res = and_basic(x).neg_basic().and_basic(or_basic(x));
+    res.Reduce();
+    return res;
 }
 
 dnf dnf::NXOR(const dnf &x) {
-    return AND(x).OR(OR(x).NEG());
+    // cout << "NXOR" << endl;
+    dnf res = and_basic(x).or_basic(or_basic(x).neg_basic());
+    res.Reduce();
+    return res;
 }

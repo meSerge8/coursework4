@@ -1,48 +1,45 @@
 #include "conj.h"
 
 conj conj::operator*(const conj &c) {
-    if (vs.size() != c.vs.size())
-        throw invalid_argument("conjunctions must be the same size:" + to_string(vs.size()) + "|" + to_string(c.vs.size()));
+    if (this->isConstanta) {
+        return this->constanta ? c : *this;
+    }
 
-    if (isConstanta)
-        return constanta != 0 ? c : *this;
+    if (c.isConstanta) {
+        return c.constanta ? *this : c;
+    }
 
-    if (c.isConstanta)
-        return c.constanta != 0 ? *this : c;
-
-    conj res(vs.size());
+    vector<var> vars(vs.size());
 
     for (int i = 0; i < vs.size(); i++) {
         int z = vs[i] | c.vs[i];
 
         if (z == 0b11)
-            return {(int)vs.size(), 0};
+            return {vs.size(), 0};
 
-        res.Set(i, var(z));
+        vars[i] = var(z);
     }
 
-    return res;
+    return {vars, false};
 }
 
 vector<conj> conj::Negate() {
-    if (IsConstant()) {
-        vector<conj> res;
-        conj r(vs.size(), not GetConstant());
-        res.push_back(r);
-        return res;
+    if (this->isConstanta) {
+        return {{vs.size(), not this->constanta}};
     }
 
     vector<conj> res;
 
-    for (int i = 0; i < vs.size(); i++) {
+    for (size_t i = 0; i < vs.size(); i++) {
         int v = vs[i] xor 0b11;
 
         if (v == 0b11)
             continue;
 
-        conj cj(vs.size());
-        cj.Set(i, var(v));
-        res.push_back(cj);
+        vector<var> vars(vs.size(), non);
+        vars[i] = var(v);
+
+        res.push_back({vars, false});
     }
 
     return res;
@@ -52,13 +49,23 @@ bool conj::operator==(const conj &c) {
     if (isConstanta != c.isConstanta)
         return false;
 
-    if (IsConstant())
+    if (isConstanta)
         return constanta == c.constanta;
 
     return vs == c.vs;
 }
 
-void conj::Set(int idx, var v) {
+bool operator==(const conj &x, const conj &y) {
+    if (x.isConstanta != y.isConstanta)
+        return false;
+
+    if (x.isConstanta)
+        return x.constanta == y.constanta;
+
+    return x.vs == y.vs;
+}
+
+void conj::Set(int idx, var v, bool c) {
     vs[idx] = v;
 
     if (v != non) {
@@ -70,7 +77,8 @@ void conj::Set(int idx, var v) {
         if (vr != non)
             return;
 
-    constanta = false;
+    isConstanta = true;
+    constanta = c;
 }
 
 var conj::Get(int idx) {

@@ -14,14 +14,15 @@ enum var {
 };
 
 class conj {
+   public:
     bool isConstanta,
         constanta;
+
     vector<var> vs;
 
-   public:
     conj();
-    conj(vector<var>);
-    conj(int size, bool constanta = 0);
+    conj(vector<var>, bool);
+    conj(size_t size, bool constanta = 0);
     conj(const conj &);
 
     bool GetConstant();
@@ -34,6 +35,10 @@ class conj {
     size_t Size();
     friend ostream &operator<<(ostream &, conj &);
 
-    void Set(int idx, var v);
+    void Set(int idx, var v, bool c);
     var Get(int idx);
+
+    friend bool operator==(const conj &x, const conj &y);
 };
+
+bool operator==(const conj &x, const conj &y);
