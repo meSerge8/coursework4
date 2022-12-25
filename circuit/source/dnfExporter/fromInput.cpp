@@ -116,7 +116,7 @@ dnf DnfExporterFromUnput::buildInputDNF(gate *g) {
         i++;
     }
 
-    conj c(this->inputGates.size());
+    conj c(this->inputGates.size(), false);
     c.Set(i, pos, false);
 
     return {this->inputGates.size(), {c}};

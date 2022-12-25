@@ -61,3 +61,7 @@ void dnf::SetNames(vector<string> l) {
 
     names = l;
 }
+
+vector<string> dnf::GetNames() {
+    return this->names;
+}

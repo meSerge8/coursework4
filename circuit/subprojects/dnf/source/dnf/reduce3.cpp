@@ -1,20 +1,19 @@
 #include "dnf.h"
 
 void dnf::Reduce() {
-    // cout << "removeConstants " << this->cs.size() << endl;
     if (removeConstants()) {
         return;
     }
 
-    // cout << "glue " << this->cs.size() << endl;
-    if (glue()) {
+    if (IsConstant()) {
         return;
     }
 
-    // cout << "absorb " << this->cs.size() << endl;
-    absorb();
+    if (glue2()) {
+        return;
+    }
 
-    // cout << "reduce done " << this->cs.size() << endl;
+    absorb();
 }
 
 bool dnf::removeConstants() {

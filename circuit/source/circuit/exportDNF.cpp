@@ -44,7 +44,7 @@ dnf circuit::BuildInputDNF(gate *g) {
         i++;
     }
 
-    conj c(inputs.size());
+    conj c(inputs.size(), false);
     c.Set(i, pos, false);
 
     return {inputs.size(), {c}};

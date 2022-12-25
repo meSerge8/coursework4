@@ -117,8 +117,8 @@ dnf DnfExporterFromBDD::buildNonTerminal(vertex* v) {
         i++;
     }
 
-    conj cPos(this->variables.size());
-    conj cNeg(this->variables.size());
+    conj cPos(this->variables.size(), false);
+    conj cNeg(this->variables.size(), false);
 
     cPos.Set(i, pos, false);
     cNeg.Set(i, neg, false);
@@ -132,9 +132,7 @@ dnf DnfExporterFromBDD::buildNonTerminal(vertex* v) {
     auto dPosPart = dPos.AND(dHigh);
     auto dNegPart = dNeg.AND(dLow);
 
-    dnf res = dNegPart.OR(dPosPart);
-
-    return res;
+    return dNegPart.OR(dPosPart);
 }
 
 dnf DnfExporterFromBDD::findDnfByVertex(vertex* v) {

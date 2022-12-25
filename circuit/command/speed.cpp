@@ -29,7 +29,8 @@ const string benchmarkPath = "../benchmarks/",
 // S526N   0.0133  done
 // S526    0.0133  done
 // S382    0.0103  done
-const vector<string> avoid{"S820", "S832", "S510", "S953", "S344",  "S526N", "S526", "S382"};
+// const vector<string> avoid{"S820", "S832", "S510", "S953", "S344", "S526N", "S526", "S382"};
+const vector<string> avoid{};
 
 int main() {
     cout << "name\tBDD\tDNF1\tDNF2" << endl;
@@ -53,7 +54,7 @@ int main() {
         printf("%.4f\t", Test_DNF_from_BDD(&c));
         cout << flush;
 
-        // printf("%.4f\t", Test_DNF(&c));
+        printf("%.4f\t", Test_DNF(&c));
         cout << flush;
 
         cout << endl;

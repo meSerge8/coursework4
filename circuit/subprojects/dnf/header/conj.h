@@ -22,7 +22,7 @@ class conj {
 
     conj();
     conj(vector<var>, bool);
-    conj(size_t size, bool constanta = 0);
+    conj(size_t size, bool constanta);
     conj(const conj &);
 
     bool GetConstant();
