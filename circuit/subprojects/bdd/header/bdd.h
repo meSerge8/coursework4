@@ -38,5 +38,4 @@ class bdd {
     vector<string> GetVarNames(list<variable *>);
 };
 
-// support
 void ClearMark(vertex *);

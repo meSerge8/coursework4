@@ -3,7 +3,7 @@
 ostream &operator<<(ostream &os, circuit &circ) {
     os << "========== circuit ==========" << endl;
     for (auto gate : circ.gates) {
-        // PrintGate(gate, os);
+        PrintGate(gate, os);
     }
     os << "========== circuit end ==========" << endl;
     return os;

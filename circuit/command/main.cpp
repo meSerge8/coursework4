@@ -2,8 +2,8 @@
 #include "circuit.h"
 #include "dnf.h"
 
-string benchPath = "../benchmarks/",
-       filename = "S27.BEN";
+string benchPath = "../big_benchmarks/",
+       filename = "S1488.BEN";
 
 int main() {
     circuit one;

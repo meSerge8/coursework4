@@ -1,17 +1,5 @@
 #include "AcceptableFooBuilder.h"
 
-// for (auto n : this->odnf.GetNames()) {
-//     cout << n << "\t";
-// }
-// cout << endl;
-
-// for (auto x : res) {
-//     for (var v : x) {
-//         cout << v - 1 << "\t";
-//     }
-//     cout << endl;
-// }
-
 AcceptableFooBuilder::AcceptableFooBuilder(dnf odnf) : odnf(odnf) {
 }
 
@@ -19,22 +7,10 @@ vector<string> AcceptableFooBuilder::BuildAcceptableFoo() {
     if (this->odnf.IsConstant()) {
         return {};
     }
-    // cout << "getM1" << endl;
     auto m1 = getM(this->odnf);
+    auto m0 = getM(this->odnf.NEG());
 
-    // cout << "negODNF" << endl;
-    auto negODNF = this->odnf.NEG();
-
-    // cout << "getM0" << endl;
-    auto m0 = getM(negODNF);
-
-    // cout << "buildTable"
-    //  << " " << m1.size()
-    //  << " " << m0.size() << endl;
     buildTable(m1, m0);
-
-    // cout << "zacrevskyMethod"
-    //  << " " << this->table.size() << endl;
     return zacrevskyMethod();
 }
 
@@ -69,16 +45,10 @@ vector<string> AcceptableFooBuilder::zacrevskyMethod() {
     auto names = this->odnf.GetNames();
     vector<string> res;
     while (this->table.size()) {
-        // cout << "findMinLine" << endl;
         vector<bool> minLine = findMinLine();
-
-        // cout << "findMaxColumn" << endl;
         int maxColumn = findMaxColumn(minLine);
-
         res.push_back(names[maxColumn]);
         names.erase(names.begin() + maxColumn);
-
-        // cout << "removeCovered" << endl;
         removeCovered(maxColumn);
     }
     return res;
@@ -102,6 +72,7 @@ vector<bool> AcceptableFooBuilder::findMinLine() {
             minCount = count;
         }
     }
+
     return *minItr;
 }
 
@@ -129,19 +100,6 @@ int AcceptableFooBuilder::findMaxColumn(vector<bool> x) {
 
     return max_i;
 }
-
-// void AcceptableFooBuilder::removeCovered(int maxColumn) {
-//     for (auto i = this->table.begin(); i < this->table.end();) {
-//         cout << i - this->table.begin() << endl;
-
-//         if ((*i)[maxColumn]) {
-//             i = this->table.erase(i);
-//         } else {
-//             i->erase(i->begin() + maxColumn);
-//             i++;
-//         }
-//     }
-// }
 
 void AcceptableFooBuilder::removeCovered(int maxColumn) {
     vector<vector<bool>> res;
