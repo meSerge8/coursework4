@@ -40,8 +40,6 @@ class BddExporterFromInput : public IBddExporter {
     bdd *Export(Circuit *);
 
    private:
-    vector<int> initInDegrees();
-    queue<int> initQueue(vector<int>);
     vector<vertex *> getSubvertices(Gate *);
     vertex *buildVertex(Gate *);
 };

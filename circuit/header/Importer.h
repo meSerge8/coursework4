@@ -8,8 +8,8 @@
 #include <regex>
 #include <string>
 
-#include "Gate.h"
 #include "Circuit.h"
+#include "Gate.h"
 
 using namespace std;
 
@@ -29,7 +29,6 @@ class Importer {
     void addOutput(string);
     void addGate(smatch);
     void addDFF(string, string);
-
     void addSubGates(Gate *, string);
     GateType getType(string);
 };

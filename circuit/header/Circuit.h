@@ -25,9 +25,6 @@ class Circuit {
         vector<Gate *> outGates);
     ~Circuit();
 
-    // IBddExporter *GetBddExporter(BddExporterType);
-    // IDnfExporter *GetDnfExporter(DnfExporterType);
-
     vector<Gate *> GetGates();
     vector<Gate *> GetInputs();
     vector<Gate *> GetOutputs();

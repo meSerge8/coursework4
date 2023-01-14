@@ -52,5 +52,4 @@ class Gate {
 string printType(GateType);
 Gate *FindByName(vector<Gate *>, string);
 vector<string> GetNames(vector<Gate *>);
-
-bool contains(vector<Gate *>*, Gate *);
+bool contains(vector<Gate *> *, Gate *);

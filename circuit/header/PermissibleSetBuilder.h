@@ -51,4 +51,4 @@ class PermissibleSetBuilder {
     void buildLines(vector<var>::iterator i, vector<var>::iterator end, vector<bool> narost, vector<vector<bool>> *res);
 };
 
-bool containsVec(vector<vector<bool>>*, vector<bool>);
+bool containsVec(vector<vector<bool>> *, vector<bool>);

@@ -55,7 +55,6 @@ class DnfExporterFromInput : public IDnfExporter {
     vector<dnf> Export();
 
    private:
-    vector<string> buildNames();
     dnf buildDNF(Gate *);
     dnf buildInputDNF(Gate *);
     vector<dnf> getSubDnfs(Gate *);
