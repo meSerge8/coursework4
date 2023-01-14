@@ -58,13 +58,14 @@ void Importer::processLine(string line) {
 
 void Importer::addInput(string gateName) {
     Gate *g = FindByName(this->gates, gateName);
-    if (g != nullptr) {
-        throw logic_error("input gate redeclaration");
+    if (g == nullptr) {
+        g = new Gate(gateName, INPUT);
+        this->gates.push_back(g);
     }
 
-    g = new Gate(gateName, INPUT);
-    this->gates.push_back(g);
-    this->inGates.push_back(g);
+    if (not contains(&this->inGates, g)) {
+        this->inGates.push_back(g);
+    }
 }
 
 void Importer::addOutput(string gateName) {

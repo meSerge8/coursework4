@@ -128,11 +128,10 @@ dnf DnfExporterFromBDD::buildNonTerminal(vertex* v) {
     auto dHigh = findDnfByVertex(v->GetHigh());
     auto dLow = findDnfByVertex(v->GetLow());
 
-    auto dPosPart = dPos.and_basic(dHigh);
-    auto dNegPart = dNeg.and_basic(dLow);
+    auto dPosPart = dPos.AND(dHigh);
+    auto dNegPart = dNeg.AND(dLow);
 
-    dnf res = dNegPart.or_basic(dPosPart);
-    res.ObviousReduce();
+    dnf res = dNegPart.OR(dPosPart);
     return res;
 }
 

@@ -23,9 +23,13 @@ int main() {
 
     // cout << c << endl;
 
-    // BddExporterFromInput expBdd;
-    // auto b = expBdd.Export(&c);
-    // b->ExportGV("S27");
+    BddExporterFromInput expBdd;
+    auto b = expBdd.Export(&c);
+    b->ExportGV("S27");
+
+    DnfExporterFromBDD expDnf(b);
+    auto ds = expDnf.Export();
+    cout << ds << endl;
 
     // DnfExporterFromInput exp(&c);
     // auto ds = exp.Export();

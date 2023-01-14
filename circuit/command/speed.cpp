@@ -14,7 +14,7 @@ namespace fs = filesystem;
 
 string GetName(string);
 bool Skip(string);
-double Test_BDD(Circuit *);
+double Test_BDD(Circuit *, string);
 double Test_DNF_from_BDD(Circuit *);
 double Test_DNF(Circuit *);
 double Test_Acceptable(Circuit *);
@@ -34,11 +34,11 @@ int main() {
             continue;
         }
 
-        Importer imp;
-        Circuit c = imp.Import(filePath);
-
         cout << GetName(filePath) << "\t";
         cout << flush;
+
+        Importer imp;
+        Circuit c = imp.Import(filePath);
 
         cout << c.CountGates() << "\t";
         cout << flush;
@@ -49,7 +49,7 @@ int main() {
         cout << c.CountOutputs() << "\t";
         cout << flush;
 
-        printf("%.4f\t", Test_BDD(&c));
+        printf("%.4f\t", Test_BDD(&c, GetName(filePath)));
         cout << flush;
 
         printf("%.4f\t", Test_DNF_from_BDD(&c));
@@ -77,12 +77,15 @@ bool Skip(string filePath) {
     return find(avoid.begin(), avoid.end(), filePath) != avoid.end();
 }
 
-double Test_BDD(Circuit *c) {
+double Test_BDD(Circuit *c, string name) {
     BddExporterFromInput bddExporter;
     Timer Timer;
     Timer.Start();
-    bddExporter.Export(c);
-    return Timer.Finish();
+    bdd *b = bddExporter.Export(c);
+    auto finish = Timer.Finish();
+
+    b->ExportGV(name);
+    return finish;
 }
 
 double Test_DNF_from_BDD(Circuit *c) {
