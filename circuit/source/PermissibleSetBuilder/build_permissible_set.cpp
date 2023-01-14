@@ -1,20 +1,17 @@
-#include "AcceptableFooBuilder.h"
+#include "PermissibleSetBuilder.h"
 
-AcceptableFooBuilder::AcceptableFooBuilder(dnf odnf) : odnf(odnf) {
-}
-
-vector<string> AcceptableFooBuilder::BuildAcceptableFoo() {
-    if (this->odnf.IsConstant()) {
+vector<string> PermissibleSetBuilder::buildPermissibleSet(dnf D1, dnf D0) {
+    if (D1.IsConstant() or D0.IsConstant()) {
         return {};
     }
-    auto m1 = getM(this->odnf);
-    auto m0 = getM(this->odnf.NEG());
+    auto m1 = getM(D1);
+    auto m0 = getM(D0);
 
     buildTable(m1, m0);
     return zacrevskyMethod();
 }
 
-vector<vector<bool>> AcceptableFooBuilder::getM(dnf d) {
+vector<vector<bool>> PermissibleSetBuilder::getM(dnf d) {
     vector<vector<bool>> res;
     for (conj& c : d.GetConjunctions()) {
         buildLines(c.vs.begin(), c.vs.end(), {}, &res);
@@ -22,7 +19,7 @@ vector<vector<bool>> AcceptableFooBuilder::getM(dnf d) {
     return res;
 }
 
-void AcceptableFooBuilder::buildTable(vector<vector<bool>> m1, vector<vector<bool>> m0) {
+void PermissibleSetBuilder::buildTable(vector<vector<bool>> m1, vector<vector<bool>> m0) {
     this->table.reserve(m1.size() * m0.size());
     for (auto m1_val : m1) {
         for (auto m0_val : m0) {
@@ -33,16 +30,15 @@ void AcceptableFooBuilder::buildTable(vector<vector<bool>> m1, vector<vector<boo
                 line[i] = m1_val[i] xor m0_val[i];
             }
 
-            auto it = find(this->table.begin(), this->table.end(), line);
-            if (it == this->table.end()) {
+            if (not containsVec(&this->table, line)) {
                 this->table.push_back(line);
             }
         }
     }
 }
 
-vector<string> AcceptableFooBuilder::zacrevskyMethod() {
-    auto names = this->odnf.GetNames();
+vector<string> PermissibleSetBuilder::zacrevskyMethod() {
+    auto names = GetNames(this->inGates);
     vector<string> res;
     while (this->table.size()) {
         vector<bool> minLine = findMinLine();
@@ -54,7 +50,7 @@ vector<string> AcceptableFooBuilder::zacrevskyMethod() {
     return res;
 }
 
-vector<bool> AcceptableFooBuilder::findMinLine() {
+vector<bool> PermissibleSetBuilder::findMinLine() {
     vector<std::vector<bool>>::iterator minItr = this->table.begin();
     int minCount = 99999999;
 
@@ -76,7 +72,7 @@ vector<bool> AcceptableFooBuilder::findMinLine() {
     return *minItr;
 }
 
-int AcceptableFooBuilder::findMaxColumn(vector<bool> x) {
+int PermissibleSetBuilder::findMaxColumn(vector<bool> x) {
     vector<int> counter(x.size());
 
     for (auto i = this->table.begin(); i != this->table.end(); i++) {
@@ -101,7 +97,7 @@ int AcceptableFooBuilder::findMaxColumn(vector<bool> x) {
     return max_i;
 }
 
-void AcceptableFooBuilder::removeCovered(int maxColumn) {
+void PermissibleSetBuilder::removeCovered(int maxColumn) {
     vector<vector<bool>> res;
     res.reserve(this->table.size());
 
@@ -114,11 +110,10 @@ void AcceptableFooBuilder::removeCovered(int maxColumn) {
     this->table = res;
 }
 
-void AcceptableFooBuilder::buildLines(vector<var>::iterator i, vector<var>::iterator end, vector<bool> narost, vector<vector<bool>>* res) {
+void PermissibleSetBuilder::buildLines(vector<var>::iterator i, vector<var>::iterator end, vector<bool> narost, vector<vector<bool>>* res) {
     while (true) {
         if (i == end) {
-            auto it = find(res->begin(), res->end(), narost);
-            if (it == res->end()) {
+            if (not containsVec(res, narost)) {
                 res->push_back(narost);
             }
             return;

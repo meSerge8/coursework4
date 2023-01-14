@@ -4,13 +4,13 @@
 #include <queue>
 #include <vector>
 
+#include "Circuit.h"
+#include "Gate.h"
 #include "bdd.h"
-#include "bddExporter.h"
 #include "dnf.h"
-#include "gate.h"
 
 typedef int DnfExporterType;
-const DnfExporterType FROM_BDD = 0;
+const DnfExporterType DNF_FROM_BDD = 0;
 const DnfExporterType DNF_FROM_INPUT = 1;
 
 class IDnfExporter {
@@ -31,7 +31,7 @@ class DnfExporterFromBDD : public IDnfExporter {
     vector<dnf> dnfs;
 
    public:
-    DnfExporterFromBDD(IBddExporter *bddExporter);
+    DnfExporterFromBDD(bdd *);
     ~DnfExporterFromBDD();
     vector<dnf> Export();
 
@@ -44,22 +44,22 @@ class DnfExporterFromBDD : public IDnfExporter {
     dnf findDnfByVertex(vertex *);
 };
 
-class DnfExporterFromUnput : public IDnfExporter {
+class DnfExporterFromInput : public IDnfExporter {
    private:
-    vector<gate *> gates;
-    vector<gate *> inputGates;
-    vector<gate *> allSubgates;
+    Circuit *c;
+    vector<Gate *> allSubgates;
     vector<dnf> dnfs;
 
    public:
-    DnfExporterFromUnput(vector<gate *>);
+    DnfExporterFromInput(Circuit *);
     vector<dnf> Export();
 
    private:
-    void sortTopological();
     vector<string> buildNames();
-    dnf buildDNF(gate *);
-    dnf buildInputDNF(gate *);
-    list<dnf> getSubDnfs(gate *);
-    dnf apply(dnf &, dnf &, gateType);
+    dnf buildDNF(Gate *);
+    dnf buildInputDNF(Gate *);
+    vector<dnf> getSubDnfs(Gate *);
+    dnf apply(dnf &, dnf &, GateType);
 };
+
+bool containsVertex(vector<vertex *> *, vertex *);

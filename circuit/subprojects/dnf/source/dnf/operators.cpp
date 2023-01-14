@@ -53,25 +53,25 @@ dnf dnf::OR(const dnf &x) {
 dnf dnf::NAND(dnf &x) {
     dnf res = and_basic(x);
     res.Reduce();
-    res = res.neg_basic();
-    return res;
+    return res.neg_basic();
 }
 
 dnf dnf::NOR(dnf &x) {
     dnf res = or_basic(x);
     res.Reduce();
-    res = res.neg_basic();
-    return res;
+    return res.neg_basic();
 }
 
 dnf dnf::XOR(const dnf &x) {
-    dnf res = and_basic(x).neg_basic().and_basic(or_basic(x));
-    res.Reduce();
-    return res;
+    dnf y = x;
+    dnf left = neg_basic().AND(y);
+    dnf right = AND(y.neg_basic());
+    return left.OR(right);
 }
 
 dnf dnf::NXOR(const dnf &x) {
-    dnf res = and_basic(x).or_basic(or_basic(x).neg_basic());
-    res.Reduce();
-    return res;
+    dnf y = x;
+    dnf left = AND(y);
+    dnf right = neg_basic().AND(y.neg_basic());
+    return left.OR(right);
 }

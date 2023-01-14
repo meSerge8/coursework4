@@ -1,6 +1,6 @@
 #include "dnf.h"
 
-void dnf::Reduce() {
+void dnf::ObviousReduce() {
     if (removeConstants()) {
         return;
     }
@@ -8,6 +8,10 @@ void dnf::Reduce() {
     if (IsConstant()) {
         return;
     }
+}
+
+void dnf::Reduce() {
+    ObviousReduce();
 
     if (glue2()) {
         return;

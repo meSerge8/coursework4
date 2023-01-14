@@ -35,7 +35,7 @@ string dnf::PrintConjunction(conj c) {
     return res;
 }
 
-ostream &operator<<(ostream &os, list<dnf> &dnfs) {
+ostream &operator<<(ostream &os, vector<dnf> &dnfs) {
     os << "========== dnfs ==========" << endl
        << endl;
 

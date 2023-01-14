@@ -4,7 +4,7 @@ string begining = "digraph BDD {",
        nodeShape = "node [shape=circle];",
        ending = "}";
 
-void bdd_manager::ExportPNG(list<string> *outs, list<vertex *> *vs, string filename) {
+void bdd_manager::ExportPNG(vector<string> *outs, vector<vertex *> *vs, string filename) {
     ofstream dotGV(filename + ".gv");
 
     dotGV << begining << endl
@@ -49,7 +49,7 @@ void bdd_manager::DrawVertexsRecursive(vertex *v, ofstream *dotGV, bool m) {
     DrawVertexsRecursive(high, dotGV, m);
 }
 
-string bdd_manager::BindOuts(list<string> *outs, list<vertex *> *vs) {
+string bdd_manager::BindOuts(vector<string> *outs, vector<vertex *> *vs) {
     string res = "";
     auto itrOut = outs->begin();
     auto itrVs = vs->begin();

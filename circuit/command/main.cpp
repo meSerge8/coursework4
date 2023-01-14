@@ -1,39 +1,33 @@
-#include "AcceptableFooBuilder.h"
-#include "circuit.h"
+#include "BddExporter.h"
+#include "Circuit.h"
+#include "DnfExporter.h"
+#include "Importer.h"
+#include "PermissibleSetBuilder.h"
 #include "dnf.h"
 
-string benchPath = "../big_benchmarks/",
-       filename = "S1488.BEN";
+string benchPath = "../benchmarks/",
+       filename = "S27.BEN",
+       poleName = "G9";
 
 int main() {
-    circuit one;
-    one.ImportBenchmark(benchPath + filename);
+    Importer imp;
+    Circuit c = imp.Import(benchPath + filename);
 
-    auto bddExp = one.GetBddExporter(FROM_INPUT);
-    auto b = bddExp->Export();
-    b->ExportGV(filename);
+    PermissibleSetBuilder psb(&c);
 
-    auto dnfExp = one.GetDnfExporter(DNF_FROM_INPUT);
-    auto ds = dnfExp->Export();
+    auto ns = psb.DoMagic("G9");
 
-    for (dnf d : ds) {
-        d.ShrinkVariables();
-        cout << d << endl;
-
-        AcceptableFooBuilder b(d);
-        auto xs = b.BuildAcceptableFoo();
-
-        cout << "BEFOR: ";
-        for (auto n : d.GetNames()) {
-            cout << n << "\t";
-        }
-        cout << endl;
-
-        cout << "AFTER: ";
-        for (auto x : xs) {
-            cout << x << "\t";
-        }
-        cout << endl
-             << "=========================" << endl;
+    for (auto n : ns) {
+        cout << n << endl;
     }
+
+    // cout << c << endl;
+
+    // BddExporterFromInput expBdd;
+    // auto b = expBdd.Export(&c);
+    // b->ExportGV("S27");
+
+    // DnfExporterFromInput exp(&c);
+    // auto ds = exp.Export();
+    // cout << ds << endl;
 }

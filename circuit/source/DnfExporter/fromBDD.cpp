@@ -1,7 +1,7 @@
-#include "dnfExporter.h"
+#include "DnfExporter.h"
 
-DnfExporterFromBDD::DnfExporterFromBDD(IBddExporter* bddExporter) {
-    this->b = bddExporter->Export();
+DnfExporterFromBDD::DnfExporterFromBDD(bdd* b) {
+    this->b = b;
     this->variables = this->b->GetManager()->GetVariablesNonTerm();
     this->varNum = this->variables.size();
     for (variable* v : this->variables) {
@@ -46,8 +46,7 @@ dnf DnfExporterFromBDD::buildRootDNF(vertex* root) {
 }
 
 void DnfExporterFromBDD::addVertexRecursive(vertex* v) {
-    auto findItr = find(this->vertices.begin(), this->vertices.end(), v);
-    if (findItr != this->vertices.end()) {
+    if (containsVertex(&this->vertices, v)) {
         return;
     }
 
@@ -129,10 +128,12 @@ dnf DnfExporterFromBDD::buildNonTerminal(vertex* v) {
     auto dHigh = findDnfByVertex(v->GetHigh());
     auto dLow = findDnfByVertex(v->GetLow());
 
-    auto dPosPart = dPos.AND(dHigh);
-    auto dNegPart = dNeg.AND(dLow);
+    auto dPosPart = dPos.and_basic(dHigh);
+    auto dNegPart = dNeg.and_basic(dLow);
 
-    return dNegPart.OR(dPosPart);
+    dnf res = dNegPart.or_basic(dPosPart);
+    res.ObviousReduce();
+    return res;
 }
 
 dnf DnfExporterFromBDD::findDnfByVertex(vertex* v) {
@@ -148,3 +149,7 @@ dnf DnfExporterFromBDD::findDnfByVertex(vertex* v) {
 
     return this->dnfs[index];
 }
+
+bool containsVertex(vector<vertex*>* gs, vertex* g) {
+    return find(gs->begin(), gs->end(), g) != gs->end();
+};

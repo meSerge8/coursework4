@@ -35,7 +35,7 @@ class bdd {
 
     dnf_from_bdd BuildDNF(vertex *root);
     void BuildDNF_Core(vertex *, dnf_from_bdd &, conjunction &);
-    vector<string> GetVarNames(list<variable *>);
+    vector<string> GetVarNames(vector<variable *>);
 };
 
 void ClearMark(vertex *);

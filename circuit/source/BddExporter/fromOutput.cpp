@@ -1,52 +1,44 @@
-#include "bddExporter.h"
+#include "BddExporter.h"
 
-BddExporterFromOutput::BddExporterFromOutput(list<gate *> outGates) {
-    this->outGates = outGates;
-}
-
-bdd *BddExporterFromOutput::Export() {
+bdd *BddExporterFromOutput::Export(Circuit *c) {
     bdd *result = new bdd();
     this->gateVertMap = new map<string, vertex *>();
     this->manager = result->GetManager();
 
-    for (auto outGate : this->outGates) {
+    for (auto outGate : c->GetOutputs()) {
         auto root = makeVertex(outGate);
-        result->AddRoot(root, outGate->name);
+        result->AddRoot(root, outGate->GetName());
     }
 
     return result;
 }
 
-vertex *BddExporterFromOutput::makeVertex(gate *gate) {
-    auto it = this->gateVertMap->find(gate->name);
+vertex *BddExporterFromOutput::makeVertex(Gate *gate) {
+    auto it = this->gateVertMap->find(gate->GetName());
     if (it != this->gateVertMap->end()) {
         return it->second;
     }
 
-    list<vertex *> subVs;
-    for (auto subGate : gate->subGates) {
+    vector<vertex *> subVs;
+    for (auto subGate : gate->GetPredecessors()) {
         auto sv = makeVertex(subGate);
         subVs.push_back(sv);
     }
 
     auto newVertex = performOperation(gate, subVs);
-    this->gateVertMap->insert(make_pair(gate->name, newVertex));
+    this->gateVertMap->insert(make_pair(gate->GetName(), newVertex));
 
     return newVertex;
 }
 
-vertex *BddExporterFromOutput::performOperation(gate *gate, list<vertex *> subgs) {
-    switch (gate->type) {
+vertex *BddExporterFromOutput::performOperation(Gate *gate, vector<vertex *> subgs) {
+    switch (gate->GetType()) {
         case NOT:
             if (subgs.size() != 1) throw logic_error("expected only one arg");
             return this->manager->Negate(subgs.front());
 
         case INPUT:
-            return this->manager->CreateVertex(gate->name);
-
-        case DFF:
-            return this->manager->CreateVertex(gate->name);
-
+            return this->manager->CreateVertex(gate->GetName());
         case AND:
             return this->manager->AND(subgs);
 

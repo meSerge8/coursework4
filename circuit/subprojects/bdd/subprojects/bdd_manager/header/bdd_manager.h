@@ -13,7 +13,7 @@
 using namespace std;
 
 class bdd_manager {
-    list<variable *> vars;
+    vector<variable *> vars;
     variable *zeroVar, *oneVar;
 
    public:
@@ -34,26 +34,26 @@ class bdd_manager {
     vertex *XOR_bin(vertex *one, vertex *two);
     vertex *NXOR_bin(vertex *one, vertex *two);
 
-    vertex *AND(list<vertex *> vertexList);
-    vertex *OR(list<vertex *> vertexList);
-    vertex *NAND(list<vertex *> vertexList);
-    vertex *NOR(list<vertex *> vertexList);
-    vertex *XOR(list<vertex *> vertexList);
-    vertex *NXOR(list<vertex *> vertexList);
+    vertex *AND(vector<vertex *> vertexList);
+    vertex *OR(vector<vertex *> vertexList);
+    vertex *NAND(vector<vertex *> vertexList);
+    vertex *NOR(vector<vertex *> vertexList);
+    vertex *XOR(vector<vertex *> vertexList);
+    vertex *NXOR(vector<vertex *> vertexList);
 
     vertex *Negate(vertex *rootVertex);
 
     vertex *Reduce(vertex *rootVertex);
 
-    list<variable *> GetVariables();
+    vector<variable *> GetVariables();
     vector<variable *> GetVariablesNonTerm();
     variable *GetOneVariable();
     variable *GetZeroVariable();
 
     void PrintVariables();
 
-    void ExportPNG(list<string> *outputGatesNames,
-                   list<vertex *> *vertexList,
+    void ExportPNG(vector<string> *outputGatesNames,
+                   vector<vertex *> *vertexList,
                    string filename);
 
    private:
@@ -65,7 +65,7 @@ class bdd_manager {
     vertex *Apply_bin_core(vertex *one, vertex *two, bool (*func)(bool, bool));
 
     // Apply multiple times
-    vertex *Apply(list<vertex *> vertexList, bool (*func)(bool, bool));
+    vertex *Apply(vector<vertex *> vertexList, bool (*func)(bool, bool));
 
     // Negate
     vertex *Negate_core(vertex *, map<u_int32_t, vertex *> &, bool);
@@ -88,7 +88,7 @@ class bdd_manager {
     void DeleteVertexMap(map<variable *, list<vertex *> *> *);
 
     // Export as PNG via graphviz
-    string BindOuts(list<string> *outs, list<vertex *> *vs);
+    string BindOuts(vector<string> *outs, vector<vertex *> *vs);
     void DrawVertexsRecursive(vertex *, ofstream *, bool m);
 };
 

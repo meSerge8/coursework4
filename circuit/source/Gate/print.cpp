@@ -1,25 +1,29 @@
-#include "gate.h"
+#include "Gate.h"
 
-ostream &operator<<(ostream &os, gate &g) {
-    os << "gate: " << g.name << endl
-       << " type: " << printType(g.type) << endl
-       << " sub-Gates: ";
+ostream &operator<<(ostream &os, Gate &g) {
+    os << g.GetName() << " = " << printType(g.GetType()) << "(";
 
-    for (auto i : g.subGates)
-        os << i->name << " ";
+    for (Gate *g : g.GetPredecessors()) {
+        os << g->GetName() << " ";
+    }
+
+    os << ") -- ";
+
+    for (Gate *g : g.GetSuccessors()) {
+        os << g->GetName() << " ";
+    }
 
     os << endl;
+
     return os;
 }
 
-string printType(gateType t) {
+string printType(GateType t) {
     switch (t) {
         case NOT:
             return "NOT";
         case INPUT:
             return "INPUT";
-        case DFF:
-            return "DFF";
         case AND:
             return "AND";
         case OR:

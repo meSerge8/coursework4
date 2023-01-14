@@ -1,7 +1,7 @@
 #include "bdd_manager.h"
 
-list<variable *> bdd_manager::GetVariables() {
-    list<variable *> res = vars;
+vector<variable *> bdd_manager::GetVariables() {
+    vector<variable *> res = vars;
     res.push_back(zeroVar);
     res.push_back(oneVar);
     return res;

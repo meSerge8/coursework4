@@ -43,7 +43,7 @@ void bdd::BuildDNF_Core(vertex *v, dnf_from_bdd &d, conjunction &cnj) {
     }
 }
 
-vector<string> bdd::GetVarNames(list<variable *> vs) {
+vector<string> bdd::GetVarNames(vector<variable *> vs) {
     vector<string> res;
 
     for (auto v : vs) {

@@ -3,8 +3,10 @@
 #include <queue>
 #include <vector>
 
+#include "Circuit.h"
+
+#include "Gate.h"
 #include "bdd.h"
-#include "gate.h"
 
 typedef int BddExporterType;
 const BddExporterType FROM_OUTPUT = 0;
@@ -12,38 +14,34 @@ const BddExporterType FROM_INPUT = 1;
 
 class IBddExporter {
    public:
-    virtual bdd *Export() = 0;
+    virtual bdd *Export(Circuit *) = 0;
 };
 
 class BddExporterFromOutput : public IBddExporter {
    private:
-    list<gate *> outGates;
     bdd_manager *manager;
     map<string, vertex *> *gateVertMap;
 
    public:
-    BddExporterFromOutput(list<gate *> outGates);
-    bdd *Export();
+    bdd *Export(Circuit *);
 
    private:
-    vertex *makeVertex(gate *);
-    vertex *performOperation(gate *, list<vertex *>);
+    vertex *makeVertex(Gate *);
+    vertex *performOperation(Gate *, vector<vertex *>);
 };
 
 class BddExporterFromInput : public IBddExporter {
    private:
-    vector<gate *> gates;
+    Circuit *c;
     bdd_manager *manager;
     vector<vertex *> vertices;
 
    public:
-    BddExporterFromInput(list<gate *> gates);
-    bdd *Export();
+    bdd *Export(Circuit *);
 
-    vector<gate *> sortTopological();
+   private:
     vector<int> initInDegrees();
     queue<int> initQueue(vector<int>);
-    list<vertex *> getSubvertices(gate *);
-    vertex *buildVertex(gate *);
-    vector<gate *> getAllSubgates();
+    vector<vertex *> getSubvertices(Gate *);
+    vertex *buildVertex(Gate *);
 };

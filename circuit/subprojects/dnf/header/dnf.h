@@ -35,6 +35,8 @@ class dnf {
     dnf XOR(const dnf &);
     dnf NXOR(const dnf &);
     dnf NEG();
+
+    void ObviousReduce();
     void Reduce();
 
     int GetVarNum();
@@ -66,6 +68,6 @@ class dnf {
 };
 
 // Print
-ostream &operator<<(ostream &, list<dnf> &);
+ostream &operator<<(ostream &, vector<dnf> &);
 
 conj buildReducedConj(vector<conj>::iterator, vector<conj>::iterator);

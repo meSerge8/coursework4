@@ -6,13 +6,13 @@
 
 using namespace std;
 
-class timer {
+class Timer {
    private:
     clock_t startTime;
 
    public:
-    timer();
-    ~timer();
+    Timer();
+    ~Timer();
 
     void Start();
     double Finish();

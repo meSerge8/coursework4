@@ -33,26 +33,26 @@ vertex *bdd_manager::NXOR_bin(vertex *one, vertex *two) {
 
 // ---------------------------------
 
-vertex *bdd_manager::AND(list<vertex *> vs) {
+vertex *bdd_manager::AND(vector<vertex *> vs) {
     return Apply(vs, and_bool);
 }
 
-vertex *bdd_manager::OR(list<vertex *> vs) {
+vertex *bdd_manager::OR(vector<vertex *> vs) {
     return Apply(vs, or_bool);
 }
 
-vertex *bdd_manager::NAND(list<vertex *> vs) {
+vertex *bdd_manager::NAND(vector<vertex *> vs) {
     return Apply(vs, nand_bool);
 }
 
-vertex *bdd_manager::NOR(list<vertex *> vs) {
+vertex *bdd_manager::NOR(vector<vertex *> vs) {
     return Apply(vs, nor_bool);
 }
 
-vertex *bdd_manager::XOR(list<vertex *> vs) {
+vertex *bdd_manager::XOR(vector<vertex *> vs) {
     return Apply(vs, xor_bool);
 }
 
-vertex *bdd_manager::NXOR(list<vertex *> vs) {
+vertex *bdd_manager::NXOR(vector<vertex *> vs) {
     return Apply(vs, nxor_bool);
 }
