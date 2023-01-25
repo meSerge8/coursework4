@@ -30,8 +30,6 @@ class Gate {
         successors;
 
    public:
-    static vector<Gate *> sortTopological(vector<Gate *>);
-
     Gate(string, GateType);
 
     string GetName();
@@ -49,6 +47,7 @@ class Gate {
     friend ostream &operator<<(ostream &, Gate &);
 };
 
+vector<Gate *> sortTopological(vector<Gate *>);
 string printType(GateType);
 Gate *FindByName(vector<Gate *>, string);
 vector<string> GetNames(vector<Gate *>);

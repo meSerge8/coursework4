@@ -20,8 +20,6 @@ conj::conj(vector<var> initVs, bool cons) {
 }
 
 conj::conj(size_t size, bool cons) : vs(size, non) {
-    if (size == 0)
-        throw logic_error("size must not be zero");
     isConstanta = true;
     constanta = cons;
 }

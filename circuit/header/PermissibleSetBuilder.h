@@ -1,54 +1,63 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
+#include <list>
 #include <queue>
 #include <tuple>
 #include <vector>
 
 #include "Circuit.h"
+#include "DnfExporter.h"
 #include "Gate.h"
+#include "bdd.h"
 #include "dnf.h"
+
+using namespace std;
 
 class PermissibleSetBuilder {
    private:
-    Circuit *c;
     vector<Gate *>
-        gates,
         inGates,
-        outGates;
-    Gate *pole;
-    vector<vector<bool>> table;
+        essentialGates;
+
+    vector<unsigned long>
+        *M0, *M1,
+        table;
+
+    vector<vector<Gate *>> permissibleGates;
 
    public:
-    PermissibleSetBuilder(Circuit *);
-    vector<string> DoMagic(string gateName);
+    ~PermissibleSetBuilder();
+    void BuildSets(dnf M0, dnf M1, vector<Gate *> inGates);
+    vector<vector<Gate *>> GetSets();
+    vector<Gate *> GetMinSet();
 
    private:
-    // main
-    void findPole(string gateName);
-    void isolateSv();
-    void isolateGates(Gate *);
-    void isolateOutGates(Gate *, vector<Gate *> *);
+    void buildTable();
+    void buildPermissibleSets(vector<Gate *> inGates);
+    bool checkMask(unsigned long mask);
+    void addPermissibleSet(unsigned long, vector<unsigned long> *);
+    void constructSets();
 
-    // build_D1_D0
-    tuple<dnf, dnf> build_D1_D0();
-    void buildDNFs_0_and_1(vector<dnf> *dnfs_0, vector<dnf> *dnfs_1);
-    dnf buildB(vector<dnf> *dnfs_0, vector<dnf> *dnfs_1);
-    dnf buildDNF(Gate *, vector<dnf> *);
-    dnf buildInputDNF(Gate *);
-    vector<dnf> getPredecessorsDNF(Gate *, vector<dnf> *);
-    dnf apply(dnf &, dnf &, GateType);
-    dnf getGateDNF(Gate *, vector<dnf> *);
-
-    // build_permissible_set
-    vector<string> buildPermissibleSet(dnf D1, dnf D0);
-    vector<vector<bool>> getM(dnf d);
-    void buildTable(vector<vector<bool>> m1, vector<vector<bool>> m0);
-    vector<string> zacrevskyMethod();
-    vector<bool> findMinLine();
-    int findMaxColumn(vector<bool> x);
-    void removeCovered(int maxColumn);
-    void buildLines(vector<var>::iterator i, vector<var>::iterator end, vector<bool> narost, vector<vector<bool>> *res);
+    // essentials
+    bool doStuffEssentials();
+    vector<unsigned long> findEssentials();
+    bool checkEssentialSet(unsigned long);
+    void reduceEssentials(vector<unsigned long>);
+    vector<Gate *> getUnessentialGates();
 };
 
-bool containsVec(vector<vector<bool>> *, vector<bool>);
+vector<unsigned long> *GetM(dnf);
+void buildLines(vector<var>::iterator i, vector<var> *, unsigned long narost, vector<unsigned long> *res);
+inline void reduceEssential(vector<unsigned long>::iterator, unsigned long);
+vector<Gate *> exportSet(unsigned long, vector<Gate *>);
+int Weight64(unsigned long);
+unsigned long combineMasks(vector<unsigned long>);
+
+class Build_M_for_1_exception : public exception {
+   public:
+    virtual const char *what() const throw() {
+        return "tried to build M for constanta 1";
+    }
+};

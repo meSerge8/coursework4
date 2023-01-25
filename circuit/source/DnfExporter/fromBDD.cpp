@@ -1,16 +1,10 @@
 #include "DnfExporter.h"
 
-DnfExporterFromBDD::DnfExporterFromBDD(bdd* b) {
+DnfExporterFromBDD::DnfExporterFromBDD(bdd* b, vector<Gate*> inGates) {
     this->b = b;
-    this->variables = this->b->GetManager()->GetVariablesNonTerm();
-    this->varNum = this->variables.size();
-    for (variable* v : this->variables) {
-        this->names.push_back(v->value);
-    }
-}
-
-DnfExporterFromBDD::~DnfExporterFromBDD() {
-    delete this->b;
+    this->manager = this->b->GetManager();
+    this->names = GetNames(inGates);
+    this->varNum = this->names.size();
 }
 
 vector<dnf> DnfExporterFromBDD::Export() {
@@ -23,6 +17,12 @@ vector<dnf> DnfExporterFromBDD::Export() {
     }
 
     return result;
+}
+
+dnf DnfExporterFromBDD::ExportVertex(vertex* v) {
+    dnf d = buildRootDNF(v);
+    d.SetNames(this->names);
+    return d;
 }
 
 dnf DnfExporterFromBDD::buildRootDNF(vertex* root) {
@@ -99,7 +99,7 @@ void DnfExporterFromBDD::sortTopological() {
 dnf DnfExporterFromBDD::buildTerminal(vertex* v) {
     dnf d(this->varNum, true);
 
-    if (v->GetVariable() == this->b->GetManager()->GetOneVariable()) {
+    if (v->GetVariable() == this->manager->GetOneVariable()) {
         d.SetConstant(true);
     } else {
         d.SetConstant(false);
@@ -109,15 +109,11 @@ dnf DnfExporterFromBDD::buildTerminal(vertex* v) {
 }
 
 dnf DnfExporterFromBDD::buildNonTerminal(vertex* v) {
-    int i = 0;
-    for (auto vr : this->variables) {
-        if (v->GetVariable() == vr)
-            break;
-        i++;
-    }
+    auto f = find(this->names.begin(), this->names.end(), v->GetVariable()->value);
+    int i = f - this->names.begin();
 
-    conj cPos(this->variables.size(), false);
-    conj cNeg(this->variables.size(), false);
+    conj cPos(this->varNum, false);
+    conj cNeg(this->varNum, false);
 
     cPos.Set(i, pos, false);
     cNeg.Set(i, neg, false);

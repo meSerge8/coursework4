@@ -14,7 +14,6 @@ class vertex {
     bool mark = 0;
 
    public:
-    // Constructors
     vertex();
     vertex(variable *);
     vertex(variable *, u_int32_t);

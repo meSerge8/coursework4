@@ -19,10 +19,7 @@ Circuit Importer::Import(string fileName) {
     }
     bench.close();
 
-    return {
-        Gate::sortTopological(this->gates),
-        this->inGates,
-        this->outGates};
+    return {sortTopological(this->gates), this->inGates, this->outGates};
 }
 
 void Importer::processLine(string line) {

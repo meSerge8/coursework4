@@ -21,7 +21,7 @@ class IDnfExporter {
 class DnfExporterFromBDD : public IDnfExporter {
    private:
     bdd *b;
-    vector<variable *> variables;
+    bdd_manager *manager;
     int varNum;
     vector<string> names;
 
@@ -31,9 +31,9 @@ class DnfExporterFromBDD : public IDnfExporter {
     vector<dnf> dnfs;
 
    public:
-    DnfExporterFromBDD(bdd *);
-    ~DnfExporterFromBDD();
+    DnfExporterFromBDD(bdd *, vector<Gate *>);
     vector<dnf> Export();
+    dnf ExportVertex(vertex *);
 
    private:
     dnf buildRootDNF(vertex *);

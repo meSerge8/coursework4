@@ -21,7 +21,7 @@ class Importer {
         outGates;
 
    public:
-    Circuit Import(string);
+    Circuit Import(string fileName);
 
    private:
     void processLine(string);

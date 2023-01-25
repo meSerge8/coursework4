@@ -91,7 +91,7 @@ double Test_BDD(Circuit *c, string name) {
 double Test_DNF_from_BDD(Circuit *c) {
     BddExporterFromInput bddExporter;
     bdd *b = bddExporter.Export(c);
-    DnfExporterFromBDD dnfExporter(b);
+    DnfExporterFromBDD dnfExporter(b, c->GetInputs());
     Timer Timer;
     Timer.Start();
     dnfExporter.Export();

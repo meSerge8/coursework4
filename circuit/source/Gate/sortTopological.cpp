@@ -1,6 +1,6 @@
 #include "Gate.h"
 
-vector<Gate *> Gate::sortTopological(vector<Gate *> gates) {
+vector<Gate *> sortTopological(vector<Gate *> gates) {
     vector<int> in_degrees(gates.size(), 0);
     queue<Gate *> q;
 
@@ -21,15 +21,24 @@ vector<Gate *> Gate::sortTopological(vector<Gate *> gates) {
         result.push_back(frontGate);
 
         for (Gate *sucGate : frontGate->GetSuccessors()) {
-            int i = find(gates.begin(), gates.end(), sucGate) - gates.begin();
+            auto f = find(gates.begin(), gates.end(), sucGate);
+            if (f == gates.end()) {
+                continue;
+            }
+
+            int i = f - gates.begin();
             in_degrees[i]--;
-            if (in_degrees[i] == 0)
+            if (in_degrees[i] == 0) {
                 q.push(gates[i]);
+            }
         }
     }
 
-    if (gates.size() != countVisited)
-        throw logic_error("Sorting failed: there is a cycle in graph");
+    if (gates.size() != countVisited) {
+        char buffer[300];
+        sprintf(buffer, "Sorting failed: there is a cycle in graph: gates = %ld, visited = %d", gates.size(), countVisited);
+        throw logic_error(string(buffer));
+    }
 
     return result;
 }
